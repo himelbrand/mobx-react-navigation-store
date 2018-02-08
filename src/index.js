@@ -13,12 +13,14 @@ class RoutePersist {
 class NavigatorPersist {
     navigation = null
     @persist @observable shouldPersist = true
-    @persist @observable initRoute = null
+    @persist @observable initRoute = null 
+    @persist @observable parent = null 
     @persist('list', RoutePersist) @observable currentStack = []
     @persist('object', RoutePersist) @observable currentRoute = null
-    constructor(shouldPersist, initRoute) {
+    constructor(shouldPersist, initRoute, parent) {
         this.shouldPersist = shouldPersist
         this.initRoute = initRoute
+        this.parent = parent
     }
     @computed get CurrentRoute() {
         return this.currentRoute.routeName
@@ -33,32 +35,30 @@ class NavigatorPersist {
         this.shouldPersist = flag
     }
     @action setRoute(route) {
+        if(route.routeName === 'NestedNavigator')
+            return
         if (this.currentRoute && (this.currentRoute.routeName !== route.routeName || (route.params && this.currentRoute.params != route.params)))
             this.currentStack.push(this.currentRoute)
-        this.currentRoute = new Route(route.routeName, route.params)
-    }
-    @action goBack(needAction) {
-        if (needAction)
-            this.navigation.goBack()
-        else if (this.currentStack.length > 0)
-            this.currentRoute = this.currentRoute.pop()
+        this.currentRoute = new RoutePersist(route.routeName, route.params)
     }
 }
 
 class NavigationStore {
     @observable storeHydrated = false
-    @observable navigators = new Map()
-    @persist('map', NavigatorPersist) navigators = new Map()
-    @persist @observable activeNavigator = null
+    @persist('map', NavigatorPersist) @observable navigators = new Map()
 
-    @action setNavigator(name, initRoute, shouldPersist = true) {
-        if (typeof initRoute === 'string' && initRoute.length > 0) {
-            this.navigators.set(name, new NavigatorPersist(shouldPersist, initRoute))
+    @persist @observable activeNavigator = ''
+
+    @action setNavigator(name, initRoute, parent, shouldPersist = true) {
+        if (typeof initRoute === 'string' && initRoute.length > 0 && !this.navigators.has(name)) {
+            this.navigators.set(name, new NavigatorPersist(shouldPersist, initRoute, parent))
             console.log(`new Navigator set: ${name}, if this is not a new navigator name, all of the stack info is now erased`)
-        } else
+        } else if (this.navigators.has(name))
+            console.log(`${name} is already set`)
+        else
             throw new Error('invalid initial route given, must be string with length of at least 1')
     }
-    @action setNavigation(navigatorName, ref) {
+    setNavigation(navigatorName, ref) {
         if (this.navigators.has(navigatorName))
             this.navigators.get(navigatorName).setNavigation(ref)
         else
@@ -77,7 +77,7 @@ class NavigationStore {
         if (this.navigators.has(navigatorName)) {
             const navigator = this.navigators.get(navigatorName)
             if (action.type === 'Navigation/BACK') {
-                navigator.goBack(false)
+                this.goBack(false)
             } else if (action.type === 'Navigation/NAVIGATE') {
                 navigator.setRoute({ routeName: action.routeName, params: action.params })
             } else if (action.type === 'Navigation/RESET') {
@@ -85,23 +85,39 @@ class NavigationStore {
                     if (resetAction.type === 'Navigation/NAVIGATE')
                         navigator.setRoute({ routeName: resetAction.routeName, params: resetAction.params })
                 })
-            } else {
-                throw new Error('not a valid navigation action')
+            }else{
+                console.log(`unhandled navigation action: ${action.type}`)
             }
         } else {
-            throw new Error('no navigator with the given name')
+            throw new Error(`no navigator with the given name: ${navigatorName}`)
         }
     }
     @action navigate(route) {//{routeName,params?,action?}
         const navigateAction = NavigationActions.navigate(route)
         const activeNavigator = this.navigators.get(this.activeNavigator)
-        const navigation = activeNavigator.navigation
-        const currentRoute = activeNavigator.currentRoute
-        if (navigation && (currentRoute && (currentRoute.routeName !== route.routeName || (route.params && currentRoute.params !== route.params))))
+        const navigation = activeNavigator && activeNavigator.navigation
+        const currentRoute = activeNavigator && activeNavigator.currentRoute
+        if ((navigation && (currentRoute && (currentRoute.routeName !== route.routeName || (route.params && currentRoute.params !== route.params)))) || navigation)
             navigation.dispatch(navigateAction)
     }
     @action goBack(needAction) {
-        navigators.get(this.activeNavigator).goBack(needAction)
+        const navigator = this.navigators.get(this.activeNavigator) 
+        if (navigator.currentStack.length > 0)
+            navigator.currentRoute = navigator.currentStack.pop()
+        else if(navigator.parent && navigator.currentStack.length === 0){
+            const parent = this.navigators.get(navigator.parent)
+            const parentNav = parent.navigation
+            if(needAction){
+                !parentNav.goBack() && parentNav.pop()
+            }
+            else if (parent.currentStack.length > 0)
+                parent.currentRoute = parent.currentStack.pop()
+            this.setActiveNavigator(navigator.parent)
+        }
+        // }else if(needAction)
+        //     navigator.navigation.goBack()
+        // else 
+
     }
     @action reset(actions, index) {//{routeName,params?,action?}
         if (actions.length < index - 1)
@@ -116,7 +132,7 @@ class NavigationStore {
             navigation.dispatch(resetAction)
     }
     @action logout() {
-        const navigators = this.navigators.values()
+        const navigators = Array.from(this.navigators.values())
         navigators.forEach(navigator => {
             const resetAction = NavigationActions.reset({
                 index: 0,
@@ -131,10 +147,13 @@ class NavigationStore {
         })
     }
     @action doneHydrating(ready = true, delay = 1500) {
-        const navigators = this.navigators.values()
-        const navigatorsNames = this.navigators.keys()
+        const navigators = Array.from(this.navigators.values())
+        console.log('navigators',navigators)
+        const navigatorsNames = Array.from(this.navigators.keys())
         let actions = {}
-        navigators.forEach((navigator, index) => {
+        navigatorsNames.forEach((name, index) => {
+            const navigator = this.navigators.get(name)
+            console.log('done hydrating - navigator:',navigator)
             let actions = []
             if (navigator.shouldPersist) {
                 actions = navigator.currentStack.map((route) => NavigationActions.navigate(route))
@@ -144,7 +163,8 @@ class NavigationStore {
             } else {
                 actions.push(NavigationActions.navigate({ routeName: navigator.initRoute }))
             }
-            if (ready && navigator.navigation && actions.length > 1) {
+            console.log('test:',ready , navigator.navigation , actions.length >= 1)
+            if (ready && navigator.navigation && actions.length >= 1) {
                 let resetAction = NavigationActions.reset({
                     index: actions.length - 1,
                     actions: actions
@@ -158,12 +178,12 @@ class NavigationStore {
         setTimeout(() => this.storeHydrated = true, delay)
     }
     @computed get NavigatorsNames() {
-        return this.navigators.keys()
+        return Array.from(this.navigators.keys())
     }
-    @computed getNavigatorStack(navigatorName) {
+    getNavigatorStack(navigatorName) {
         return this.navigators.get(navigatorName).currentStack.peek()
     }
-    @computed get allNavigatorsStacks() {
+    @computed get AllNavigatorsStacks() {
         const names = this.NavigatorsNames
         const stacks = names.map(name => this.getNavigatorStack(name))
         let ans = {}
@@ -175,10 +195,12 @@ class NavigationStore {
     @computed get ActiveNavigator() {
         return this.activeNavigator
     }
-    @computed get currentRoute() {
-        return `${this.navigators.get(this.activeNavigator).currentRoute}@${this.activeNavigator}`
+    @computed get CurrentRoute() {
+        return this.navigators.get(this.activeNavigator) && this.navigators.get(this.activeNavigator).currentRoute ? 
+        this.navigators.get(this.activeNavigator).currentRoute.routeName+'@'+this.activeNavigator : 
+        'not found'
     }
-    @computed getNavigator(navigatorName) {
+    getNavigator(navigatorName) {
         return this.navigators.get(navigatorName)
     }
 }
