@@ -47,8 +47,8 @@ class NavigationStore {
 
     @persist @observable activeNavigator = ''
 
-    @action setNavigator(name, initRoute, parent, shouldPersist = true) {
-        if (typeof initRoute === 'string' && initRoute.length > 0 && !this.navigators.has(name)) {
+    @action setNavigator(name, initRoute, parent = null , shouldPersist = true) {
+        if (typeof initRoute === 'string' && initRoute.length > 0 && (!this.navigators.has(name) || this.navigators.get(name).shouldPersist !== shouldPersist || this.navigators.get(name).initRoute !== initRoute || this.navigators.get(name).parent !== parent)) {
             this.navigators.set(name, new NavigatorPersist(shouldPersist, initRoute, parent))
             console.log(`new Navigator set: ${name}, if this is not a new navigator name, all of the stack info is now erased`)
         } else if (this.navigators.has(name))

@@ -45,7 +45,7 @@ class Root extends Component {
             try {
                 NavigationStore.setNavigator('Main', 'MainFirst')
                 NavigationStore.setNavigator('NavOne','NavOneFirst','Main')
-                NavigationStore.setNavigator('NavTwo','NavTwoFirst','NavOne')
+                NavigationStore.setNavigator('NavTwo','NavTwoFirst','NavOne',false)
                 if (!NavigationStore.ActiveNavigator)
                     NavigationStore.setActiveNavigator('Main')
             } catch (err) {
