@@ -3115,9 +3115,9 @@ mobx-persist@^0.4.1:
   dependencies:
     serializr "^1.1.11"
 
-mobx-react-navigation-store@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/mobx-react-navigation-store/-/mobx-react-navigation-store-0.1.0.tgz#2bef6bc38dd5c55f712ab1a3f813fdf85da062c7"
+mobx-react-navigation-store@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/mobx-react-navigation-store/-/mobx-react-navigation-store-0.1.2.tgz#e0a9a6ea043272e58951f6d9e78e2c515d229dd0"
   dependencies:
     mobx "^3.4.1"
     mobx-persist "^0.4.1"

@@ -35,8 +35,6 @@ class NavigatorPersist {
         this.shouldPersist = flag
     }
     @action setRoute(route) {
-        if(route.routeName === 'NestedNavigator')
-            return
         if (this.currentRoute && (this.currentRoute.routeName !== route.routeName || (route.params && this.currentRoute.params != route.params)))
             this.currentStack.push(this.currentRoute)
         this.currentRoute = new RoutePersist(route.routeName, route.params)
@@ -110,8 +108,11 @@ class NavigationStore {
             if(needAction){
                 !parentNav.goBack() && parentNav.pop()
             }
-            else if (parent.currentStack.length > 0)
+            else if (parent.currentStack.length > 0){
                 parent.currentRoute = parent.currentStack.pop()
+                if(parent.currentRoute.routeName === 'NestedNavigator')
+                    parent.currentRoute = parent.currentStack.pop()
+            }
             this.setActiveNavigator(navigator.parent)
         }
         // }else if(needAction)
