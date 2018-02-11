@@ -2,6 +2,16 @@
 
 mobx navigation store for nested navigators using react navigation, including persist when needed
 
+## Welcome
+
+This project is still under construction and will be improved further
+if you want to contribute you can
+* see the Contributing section and then you can
+    * open issues with ideas for improvments 
+    * help with documantion 
+    * PRs
+of course you don't have to contribute to enjoy this package, so enjoy!
+
 ## Why?
 
 while working with react native I found that I need to use quite often with nested navigators and keeping the navigation state when the user closes the app.
@@ -42,15 +52,19 @@ Note that this packages are installed automatically when installing mobx-react-n
 * "react-navigation": "^1.0.0-beta.29"
 
 ## Usage
+
 Note that more info on the specific methods and fields will be added later in another section 
 this is just general usage instructions
+
 ### import
+
 this package exports a singelton so every where you import will have the same data inside
 ```javascript
 import NavigationStore from 'mobx-react-navigation-store'
 ```
 
 ### hydrate store and set navigators
+
 the hydration should happen in the component that renders the main navigator
 this code is from the react native example app, so assume usage of three navigators called: Main,NavOne,NavTwo
 where Main is the parent of NavOne and NavOne is the parent of NavTwo and NavTwo is not persistent.
@@ -84,6 +98,7 @@ const hydrate = create({
 ```
 
 ### setting navigation ref and handling actions
+
 in every component that renders a navigator the following must be done inside the render function, here Main is the navigator being rendered:
 ```javascript 
     <Main
@@ -107,6 +122,7 @@ in every component that renders a navigator the following must be done inside th
 this will ensure that all of the actions are handled by the store and that the methods for navigation in the package will work on this navigator
 
 ### example stack navigator
+
 right now in order to make a screen marked as a nested navigator you must give it a name including the string: 'NestedNavigator' 
 it can be anything including this string for example : 'NestedNavigator1' or 'NestedNavigator_Chat' or 'NestedNavigatorOne' etc.
 ```javascript
@@ -125,6 +141,7 @@ const Main = StackNavigator(
 ```
 
 ### passing the navigator store via mobx provider
+
 Although as mentioned above, you can just import the navigation store at any screen and it will stay concurrent, you can also pass it via props or via the mobx provider
 like so:
 ```javascript 
@@ -160,6 +177,7 @@ notice that in order to react to changes in observables you need the component g
 ### actions
 
 #### setNavigator(name:string, initRoute:string, parent:string, shouldPersist:boolean)
+
 used to declare and set the navigators in the app and their relation to other navigators and should they persist the navigation state
 params:
 * name - default: none , description: navigator's name , required: yes
@@ -168,22 +186,26 @@ params:
 * initRoute - default: true , description: should navigator persist state , required: no
 
 ### setActiveNavigator(navigatorName:string)
+
 used to set the current active navigator, recommended to use in inside componentDidMount inside the components that renders the navigators
 params:
 * navigatorName - default: none , description: the name of the navigator to set as active , required: yes
 
 ### handleAction(navigatorName:string, action:NavigationActionObject)
+
 used to handle the navigations actions to keep correct navigation state, should be used as seen above
 params:
 * navigatorName - default: none , description: the name of the navigator to be managed , required: yes
 * action - default: none , description: the action triggered , required: yes
 
 ### goBack(needAction:boolean)
+
 used to go back on screen, even between nested navigators , also helps keep the correctness of the navigation state
 params:
 * needAction - default: false , description: should the goBack actually go back or just update the state, true is to dispatch the goBack action , required: no
 
 ### navigate(route:{routeName:string,params:object,action:NavigationAction})
+
 used to navigate between screens
 params:
 * route - default: none , description: the info of the screen we want to navigate to (based on the navigate of react-navigation) , required: yes
@@ -192,15 +214,18 @@ params:
     * action - default: none , description: the action to be triggered when getting to the screen , required: no
 
 ### reset(actions:array, index:number)
+
 used to reset navigation stack , index must be inside the bounds of actions array
 params:
 * actions - default: none , description: array of NavigationActions to reset stack with , required: yes
 * index - default: none , description: the index of the wanted screen after the stack reset , required: yes
 
 ### logout()
+
 used to reset all of the navigators in the app to empty stack and initial routes
 
 ### doneHydrating(ready:boolean, delay:number)
+
 used to hydrate the store and restore the navigation state
 params:
 * ready - default: true , description: if this is false the stacks will not be restored just the current route will be set to initial route , required: no
@@ -208,6 +233,7 @@ params:
 note that the ready param is not ready for use and should be implemented correctly so it could differ between navigators, right now should use only if the predicate used regards the resoration of all navigators
 
 ## computed - getters 
+
 All of this functions are getters and are used as fields like so:
 for example if the getter is foo()
 ```javascript
@@ -215,34 +241,42 @@ NavigationStore.foo
 ```
 
 ### NavigatorsNames
+
 returns an array of all the navigators names
 
 ### AllNavigatorsStacks
+
 returns a map where the keys are navigators names and the values are their stacks
 
 ### ActiveNavigator
+
 returns the name of the active navigator
 
 ### CurrentRoute
+
 returns the current route and the name of the navigator he is a screen of sperated by a @, for example: 'MainFirst@Main'
 
 ### canGoBack
+
 returns a boolean value indicating whether or not it's possible to go back in the navigation
 
 ## other functions
 
 ### setNavigation(navigatorName:string, ref:navigationReference)
+
 used to set the navigation reference as seen above
 params:
 * navigatorName - default: none , description: the name of the navigator to be managed , required: yes
 * ref - default: none , description: the reference to _navigation of a navigator, required: yes
 
 ### getNavigatorStack(navigatorName:string)
+
 used to get the current stack of a navigator by its name
 params:
 * navigatorName - default: none , description: the name of the navigator that we want to get his current stack , required: yes
 
 ### getNavigator(navigatorName:string)
+
 used to get a navigator by its name
 params:
 * navigatorName - default: none , description: the name of the navigator that we want returned , required: yes
@@ -264,17 +298,23 @@ Note that the navigator returned is an instance of the class NavigatorPersist wh
 note that these functions are used by the functions of NvaigationStore, but if you want to use them it's possible
 
 ## NavigationStore fields - initial
+
 * @observable storeHydrated = false
 * @persist('map', NavigatorPersist) @observable navigators = new Map()
 * @persist @observable activeNavigator = ''
 
 ## Contributing
-Please read CONTRIBUTING.md for details on our code of conduct, and the process for submitting pull requests to us.
 
+Please read [CONTRIBUTING.md](https://github.com/himelbrand/mobx-react-navigation-store/blob/master/CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
+
+## Versioning
+
+We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
 ## License
 This project is licensed under the MIT License
 
 ## Acknowledgments
+
 this package uses the packages mentioned above, which are great packages that are open source 
 for more info on these packages and how to use them so you can make greater benefit of this package use the links below:
 * [mobx - getting started](https://mobx.js.org/getting-started.html)
