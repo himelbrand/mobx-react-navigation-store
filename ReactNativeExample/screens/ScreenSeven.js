@@ -16,21 +16,13 @@ class ScreenSeven extends Component {
         return (
             <View style={Style.container}>
                 
-                <Text style={Style.text}>{this.props.NavigationStore.CurrentRoute}</Text>
-                <Button style={Style.button} onPress={()=>{                        
-                        console.log(this.props.NavigationStore.CurrentRoute)                         
-                        console.log(this.props.NavigationStore.ActiveNavigator)                         
-                        this.props.navigation.goBack()}}>
-                        <Text style={Style.buttonText}>go Back</Text>
-                    </Button>
-                <View>
+            
                     <Button style={Style.button} onPress={()=>{                         
                         console.log(this.props.NavigationStore.CurrentRoute)                         
                         console.log(this.props.NavigationStore.ActiveNavigator)                         
                         this.props.NavigationStore.navigate({ routeName: 'NavTwoFirst' })}}>
                         <Text style={Style.buttonText}>Screen 6</Text>
                     </Button>
-                </View>
             </View>
         )
     }
@@ -38,9 +30,10 @@ class ScreenSeven extends Component {
 }
 const Style = StyleSheet.create({
     container: {
-        backgroundColor: 'pink',
+        backgroundColor: '#D89352',
         flex: 1,
-        justifyContent: 'space-around'
+        justifyContent: 'space-around',
+        alignItems:'center'
     },
     h1: {
         fontSize: 35,
@@ -54,7 +47,7 @@ const Style = StyleSheet.create({
         width: 100,
         height: 75,
         margin: 20,
-        borderWidth: 1,
+        borderWidth: 2,
         borderColor: "#ecebeb",
         justifyContent: "center",
         alignItems: "center",

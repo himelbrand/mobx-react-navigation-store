@@ -43,13 +43,13 @@ class SplashScreen extends Component {
     }
     render() {
         return (
-            <ImageBackground style={Style.image_background} resizeMode='cover' source={require('../assets/splashBG.jpg')}>
+            <View style={Style.image_background}>
                 <View style={Style.container}>
                     <Text style={Style.text}>
                         Loading{this.state.dots}
                     </Text>
                 </View>
-            </ImageBackground>
+            </View>
         )
     }
 }
@@ -57,7 +57,9 @@ const Style = StyleSheet.create({
     image_background: {
         flex: 1,
         minHeight: '100%',
-        minWidth: '100%'
+        minWidth: '100%',
+        backgroundColor:'#7180B9',
+        zIndex:200
     },
     container: {
         flex: 1,

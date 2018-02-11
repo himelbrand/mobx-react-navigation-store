@@ -16,14 +16,6 @@ class ScreenTwo extends Component {
         // this.props.NavigationStore.setNavigation('Main',this.props.navigation)
         return (
             <View style={Style.container}>
-              
-                <Text style={Style.text}>{this.props.NavigationStore.CurrentRoute}</Text>
-                <Button style={Style.button} onPress={()=>{                        
-                        console.log(this.props.NavigationStore.CurrentRoute)                         
-                        console.log(this.props.NavigationStore.ActiveNavigator)                         
-                        this.props.navigation.goBack()}}>
-                        <Text style={Style.buttonText}>go Back</Text>
-                    </Button>
                 <View style={{flexDirection:'row'}}>
                     <Button style={Style.button} onPress={()=>{                        
                         console.log(this.props.NavigationStore.CurrentRoute)                         
@@ -37,11 +29,11 @@ class ScreenTwo extends Component {
                         this.props.NavigationStore.navigate({ routeName: 'MainThird' })}}>
                         <Text style={Style.buttonText}>Screen 3</Text>
                     </Button>
-                    <Button style={Style.button} onPress={()=>{                         
+                    <Button style={[Style.button,{backgroundColor:'#B4D2BA'}]} onPress={()=>{                         
                         console.log(this.props.NavigationStore.CurrentRoute)                         
                         console.log(this.props.NavigationStore.ActiveNavigator)                         
                         this.props.NavigationStore.navigate({ routeName: 'NestedNavigator' })}}>
-                        <Text style={Style.buttonText}>inner Navigator - Screen 4</Text>
+                        <Text style={Style.buttonText}>Screen 4</Text>
                     </Button>
                 </View>
             </View>
@@ -51,7 +43,7 @@ class ScreenTwo extends Component {
 }
 const Style = StyleSheet.create({
     container: {
-        backgroundColor: 'red',
+        backgroundColor: '#8ED081',
         flex: 1,
         justifyContent: 'space-around'
     },
@@ -67,7 +59,7 @@ const Style = StyleSheet.create({
         width: 100,
         height: 75,
         margin: 20,
-        borderWidth: 1,
+        borderWidth: 2,
         borderColor: "#ecebeb",
         justifyContent: "center",
         alignItems: "center",

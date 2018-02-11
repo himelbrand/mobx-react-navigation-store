@@ -11,6 +11,7 @@ import { create } from 'mobx-persist'
 import NavigationStore from 'mobx-react-navigation-store'
 import { ScreenOne, ScreenTwo, ScreenThree, SplashScreen } from '../screens'
 import NavigatorOne from './NavigatorOne'
+import {Header, Footer} from '../components'
 const hydrate = create({
     storage: AsyncStorage
 })
@@ -66,8 +67,9 @@ class Root extends Component {
 
         return (
             <View style={{ flex: 1, justifyContent: 'space-around' }}>
-                {!splashDone && <SplashScreen />}
+                {!splashDone ? <SplashScreen /> : <Header/> }
                 {this.state.hydrated && <Provider {...stores}>
+                    
                     <Main
                         ref={ref => {
                             if (ref &&  (!NavigationStore.getNavigator('Main').navigation || this.state.nowMounted)) {
@@ -90,6 +92,7 @@ class Root extends Component {
                         }}
                     />
                 </Provider>}
+                {splashDone && <Footer/>}
             </View>
         )
     }

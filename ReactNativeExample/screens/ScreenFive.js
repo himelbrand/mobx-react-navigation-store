@@ -15,25 +15,19 @@ class ScreenFive extends Component {
 
         return (
             <View style={Style.container}>
-                <Text style={Style.text}>{this.props.NavigationStore.CurrentRoute}</Text>
-                <Button style={Style.button} onPress={()=>{                        
-                        console.log(this.props.NavigationStore.CurrentRoute)                         
-                        console.log(this.props.NavigationStore.ActiveNavigator)                         
-                        this.props.navigation.goBack()}}>
-                        <Text style={Style.buttonText}>go Back</Text>
-                    </Button>
-                <View>
+                
+                <View style={{flexDirection:'row',justifyContent:'space-around'}}>
                     <Button style={Style.button} onPress={()=>{
                         console.log(this.props.NavigationStore.CurrentRoute)                         
                         console.log(this.props.NavigationStore.ActiveNavigator)                         
                         this.props.NavigationStore.navigate({ routeName: 'NavOneFirst' })}}>
                         <Text style={Style.buttonText}>Screen 4</Text>
                     </Button>
-                    <Button style={Style.button} onPress={()=>{
+                    <Button style={[Style.button,{backgroundColor:'#D89352'}]} onPress={()=>{
                         console.log(this.props.NavigationStore.CurrentRoute)                         
                         console.log(this.props.NavigationStore.ActiveNavigator)                         
                         this.props.NavigationStore.navigate({ routeName: 'NestedNavigator' })}}>
-                        <Text style={Style.buttonText}>inner Navigator - Screen 6</Text>
+                        <Text style={Style.buttonText}>Screen 6</Text>
                     </Button>
                 </View>
             </View>
@@ -43,7 +37,7 @@ class ScreenFive extends Component {
 }
 const Style = StyleSheet.create({
     container: {
-        backgroundColor: 'green',
+        backgroundColor: '#B4D2BA',
         flex: 1,
         justifyContent: 'space-around'
     },
@@ -59,7 +53,7 @@ const Style = StyleSheet.create({
         width: 100,
         height: 75,
         margin: 20,
-        borderWidth: 1,
+        borderWidth: 2,
         borderColor: "#ecebeb",
         justifyContent: "center",
         alignItems: "center",

@@ -107,18 +107,17 @@ class NavigationStore {
             const parentNav = parent.navigation
             if(needAction){
                 !parentNav.goBack() && parentNav.pop()
+                while(parent.currentRoute.routeName === 'NestedNavigator')
+                    parent.currentRoute = parent.currentStack.pop()
             }
             else if (parent.currentStack.length > 0){
                 parent.currentRoute = parent.currentStack.pop()
-                if(parent.currentRoute.routeName === 'NestedNavigator')
+                console.log('check this!!!',parent.currentRoute)
+                while(parent.currentRoute.routeName === 'NestedNavigator')
                     parent.currentRoute = parent.currentStack.pop()
             }
             this.setActiveNavigator(navigator.parent)
         }
-        // }else if(needAction)
-        //     navigator.navigation.goBack()
-        // else 
-
     }
     @action reset(actions, index) {//{routeName,params?,action?}
         if (actions.length < index - 1)
@@ -162,6 +161,7 @@ class NavigationStore {
                 if (navigator.currentRoute)
                     actions.push(NavigationActions.navigate(navigator.currentRoute))
             } else {
+                navigator.currentStack.clear()
                 actions.push(NavigationActions.navigate({ routeName: navigator.initRoute }))
             }
             console.log('test:',ready , navigator.navigation , actions.length >= 1)
@@ -200,6 +200,12 @@ class NavigationStore {
         return this.navigators.get(this.activeNavigator) && this.navigators.get(this.activeNavigator).currentRoute ? 
         this.navigators.get(this.activeNavigator).currentRoute.routeName+'@'+this.activeNavigator : 
         'not found'
+    }
+    @computed get canGoBack(){
+        const names = this.NavigatorsNames
+        const stacks = names.map(name => this.getNavigatorStack(name))
+        const ans = stacks.reduce((acc, curr)=> acc || curr.length > 0,false)
+        return ans
     }
     getNavigator(navigatorName) {
         return this.navigators.get(navigatorName)
