@@ -17,6 +17,10 @@ of course you don't have to contribute to enjoy this package, so enjoy!
 while working with react native I found that I need to use quite often with nested navigators and keeping the navigation state when the user closes the app.
 after many times implementing an app specific navigation store using mobx, so this project aspires to be a generic navigation state mangment store which supports navigation presisitence.
 
+## Working example
+you can check out the very simple react native example app
+just click [here](https://github.com/himelbrand/mobx-react-navigation-store/tree/master/ReactNativeExample) and follow the instructions
+enjoy!
 ## What's ready?
 
 * stack navigators - partial support
