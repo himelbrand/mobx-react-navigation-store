@@ -313,7 +313,7 @@ Please read [CONTRIBUTING.md](https://github.com/himelbrand/mobx-react-navigatio
 
 ## Versioning
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
+We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/himelbrand/mobx-react-navigation-store/tags). 
 ## License
 This project is licensed under the MIT License
 
