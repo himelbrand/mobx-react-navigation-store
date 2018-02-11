@@ -44,7 +44,6 @@ class NavigatorPersist {
 class NavigationStore {
     @observable storeHydrated = false
     @persist('map', NavigatorPersist) @observable navigators = new Map()
-
     @persist @observable activeNavigator = ''
 
     @action setNavigator(name, initRoute, parent = null , shouldPersist = true) {
@@ -91,6 +90,8 @@ class NavigationStore {
         }
     }
     @action navigate(route) {//{routeName,params?,action?}
+        if(!route)
+            throw new Error(`route is required in order to navigate`)
         const navigateAction = NavigationActions.navigate(route)
         const activeNavigator = this.navigators.get(this.activeNavigator)
         const navigation = activeNavigator && activeNavigator.navigation
@@ -98,7 +99,7 @@ class NavigationStore {
         if ((navigation && (currentRoute && (currentRoute.routeName !== route.routeName || (route.params && currentRoute.params !== route.params)))) || navigation)
             navigation.dispatch(navigateAction)
     }
-    @action goBack(needAction) {
+    @action goBack(needAction = false) {
         const navigator = this.navigators.get(this.activeNavigator) 
         if (navigator.currentStack.length > 0)
             navigator.currentRoute = navigator.currentStack.pop()
@@ -107,19 +108,19 @@ class NavigationStore {
             const parentNav = parent.navigation
             if(needAction){
                 !parentNav.goBack() && parentNav.pop()
-                while(parent.currentRoute.routeName === 'NestedNavigator')
+                while(parent.currentRoute.routeName.includes('NestedNavigator'))
                     parent.currentRoute = parent.currentStack.pop()
             }
             else if (parent.currentStack.length > 0){
                 parent.currentRoute = parent.currentStack.pop()
                 console.log('check this!!!',parent.currentRoute)
-                while(parent.currentRoute.routeName === 'NestedNavigator')
+                while(parent.currentRoute.routeName.includes('NestedNavigator'))
                     parent.currentRoute = parent.currentStack.pop()
             }
             this.setActiveNavigator(navigator.parent)
         }
     }
-    @action reset(actions, index) {//{routeName,params?,action?}
+    @action reset(actions, index) {
         if (actions.length < index - 1)
             throw new Error('invalid index - out of bounds')
         const resetAction = NavigationActions.reset({
