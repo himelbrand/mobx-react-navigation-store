@@ -25,9 +25,9 @@ enjoy!
 ## What's ready?
 
 * stack navigators - partial support
-    * nested stack navigators - ![stuff](http://cdn.micpa.com/wp-content/uploads/2014/12/check_box.png "check")
-    * with persistence - V
-    * without persistence - V
+    * nested stack navigators - has support
+    * with persistence - has support
+    * without persistence - has support
     * navigation actions supported : navigate, reset, goBack
     * navigation actions support still missing : replace, push, pop, popToTop
 * drawer navigators - no support yet :(
