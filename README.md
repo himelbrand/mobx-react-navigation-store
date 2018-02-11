@@ -10,6 +10,7 @@ if you want to contribute you can
     * open issues with ideas for improvments 
     * help with documantion 
     * PRs
+    
 of course you don't have to contribute to enjoy this package, so enjoy!
 
 ## Why?
@@ -24,7 +25,7 @@ enjoy!
 ## What's ready?
 
 * stack navigators - partial support
-    * nested stack navigators - V
+    * nested stack navigators - ![stuff](http://cdn.micpa.com/wp-content/uploads/2014/12/check_box.png "check")
     * with persistence - V
     * without persistence - V
     * navigation actions supported : navigate, reset, goBack
