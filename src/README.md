@@ -10,6 +10,7 @@ if you want to contribute you can
     * open issues with ideas for improvments 
     * help with documantion 
     * PRs
+
 of course you don't have to contribute to enjoy this package, so enjoy!
 
 ## Why?
