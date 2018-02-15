@@ -45,8 +45,8 @@ class Root extends Component {
         hydrate('navigation', NavigationStore).then(() => {
             try {
                 NavigationStore.setNavigator('Main', 'MainFirst')
-                NavigationStore.setNavigator('NavOne','NavOneFirst','Main')
-                NavigationStore.setNavigator('NavTwo','NavTwoFirst','NavOne',false)
+                NavigationStore.setNavigator('NavOne','NavOneFirst','stack','Main')
+                NavigationStore.setNavigator('NavTwo','NavTwoFirst','stack','NavOne',false)
                 if (!NavigationStore.ActiveNavigator)
                     NavigationStore.setActiveNavigator('Main')
                 NavigationStore.setInitialNavigator('Main')
