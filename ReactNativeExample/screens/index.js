@@ -6,7 +6,7 @@ import ScreenFour from './ScreenFour'
 import ScreenFive from './ScreenFive'
 import ScreenSix from './ScreenSix'
 import ScreenSeven from './ScreenSeven'
-
+import Home from './Home'
 export {
     SplashScreen,
     ScreenOne,
@@ -15,5 +15,6 @@ export {
     ScreenFour,
     ScreenFive,
     ScreenSix,
-    ScreenSeven
+    ScreenSeven,
+    Home
 }

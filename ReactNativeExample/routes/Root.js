@@ -5,7 +5,7 @@ import {
     AsyncStorage,
     Keyboard
 } from 'react-native';
-import { StackNavigator, NavigationActions } from 'react-navigation'
+import { StackNavigator, NavigationActions,TabNavigator } from 'react-navigation'
 import { observer, Provider } from 'mobx-react/native'
 import { create } from 'mobx-persist'
 import NavigationStore from 'mobx-react-navigation-store'
@@ -49,6 +49,7 @@ class Root extends Component {
                 NavigationStore.setNavigator('NavTwo','NavTwoFirst','NavOne',false)
                 if (!NavigationStore.ActiveNavigator)
                     NavigationStore.setActiveNavigator('Main')
+                NavigationStore.setInitialNavigator('Main')
             } catch (err) {
                 console.log(err)
             }
@@ -64,7 +65,7 @@ class Root extends Component {
     }
     render() {
         const splashDone = NavigationStore.storeHydrated
-
+        console.log(NavigationStore.getNavigator('Main'))
         return (
             <View style={{ flex: 1, justifyContent: 'space-around' }}>
                 {!splashDone ? <SplashScreen /> : <Header/> }
@@ -72,6 +73,8 @@ class Root extends Component {
                     
                     <Main
                         ref={ref => {
+                            console.log(ref,NavigationStore.getNavigator('Main'))
+
                             if (ref &&  (!NavigationStore.getNavigator('Main').navigation || this.state.nowMounted)) {
                                 this.setState({ nowMounted: false })
                                 try {
