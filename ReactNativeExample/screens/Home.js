@@ -10,6 +10,8 @@ class Home extends Component {
         super(props)
     }
     render() {
+        //this.props.NavigationStore.setActiveNavigator('MainTabs')
+
         return (
             <View style={Style.container}>
                     <Text>Home Screen</Text>
