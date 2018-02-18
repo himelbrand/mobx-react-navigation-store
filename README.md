@@ -10,6 +10,7 @@ if you want to contribute you can
     * open issues with ideas for improvments 
     * help with documantion 
     * PRs
+    
 of course you don't have to contribute to enjoy this package, so enjoy!
 
 ## Why?
@@ -24,9 +25,9 @@ enjoy!
 ## What's ready?
 
 * stack navigators - partial support
-    * nested stack navigators - V
-    * with persistence - V
-    * without persistence - V
+    * nested stack navigators - has support
+    * with persistence - has support
+    * without persistence - has support
     * navigation actions supported : navigate, reset, goBack
     * navigation actions support still missing : replace, push, pop, popToTop
 * drawer navigators - no support yet :(
@@ -313,7 +314,7 @@ Please read [CONTRIBUTING.md](https://github.com/himelbrand/mobx-react-navigatio
 
 ## Versioning
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
+We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/himelbrand/mobx-react-navigation-store/tags). 
 ## License
 This project is licensed under the MIT License
 
