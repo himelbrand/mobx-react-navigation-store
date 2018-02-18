@@ -12,12 +12,12 @@ class SplashScreen extends Component {
     constructor() {
         super()
         this.state = {
-            dots: ''
+            dots: '',
         }
         this.interval = null
         this.dotCount = 0
     }
-    componentDidMount() {
+    componentWillMount() {
         this.interval = setInterval(() => {
             this.dotCount = (this.dotCount + 1) % 4
             switch (this.dotCount) {
@@ -42,7 +42,7 @@ class SplashScreen extends Component {
         clearInterval(this.interval)
     }
     render() {
-        return (
+        return  (
             <View style={Style.image_background}>
                 <View style={Style.container}>
                     <Text style={Style.text}>
@@ -50,7 +50,7 @@ class SplashScreen extends Component {
                     </Text>
                 </View>
             </View>
-        )
+        ) 
     }
 }
 const Style = StyleSheet.create({

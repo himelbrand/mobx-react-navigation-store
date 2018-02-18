@@ -13,6 +13,10 @@ if you want to contribute you can
 
 of course you don't have to contribute to enjoy this package, so enjoy!
 
+## Importent
+the docs are not up-to-date, they are correct for version ^0.2.0 , current version is 0.3.0
+Added support for TabNavigators , including persist and nested navigators, currently tested only stacks nested inside tabs and not tabs in tabs or tabs in stacks 
+
 ## Why?
 
 while working with react native I found that I need to use quite often with nested navigators and keeping the navigation state when the user closes the app.
@@ -31,7 +35,7 @@ enjoy!
     * navigation actions supported : navigate, reset, goBack
     * navigation actions support still missing : replace, push, pop, popToTop
 * drawer navigators - no support yet :(
-* tab navigators - no support yet :(
+* tab navigators - partial support , still testing
 
 ## Installation
 

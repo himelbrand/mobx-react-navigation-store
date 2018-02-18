@@ -44,18 +44,17 @@ class MainStack extends Component {
         this.props.NavigationStore.setActiveNavigator('Main')
     }
     render() {
-        console.log(this.state.nowMounted)
-        return (
+                return (
             <View style={{ flex: 1 }}>
                 <Header />
                 <Main
                     ref={ref => {
-                        console.log(ref, this.props.NavigationStore.getNavigator('Main'))
+                        ////console.log(ref, this.props.NavigationStore.getNavigator('Main'))
 
                         if (ref && (!this.props.NavigationStore.getNavigator('Main').navigation || this.state.nowMounted)) {
                             this.setState({ nowMounted: false })
                             try {
-                                console.log('set Main Nav')
+                                //console.log('set Main Nav')
                                 this.props.NavigationStore.setNavigation('Main', ref._navigation)
                             } catch (err) {
                                 console.log(err)

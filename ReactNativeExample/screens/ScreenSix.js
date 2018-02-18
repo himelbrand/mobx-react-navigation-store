@@ -17,8 +17,8 @@ class ScreenSix extends Component {
             <View style={Style.container}>
                 <View>
                     <Button style={Style.button} onPress={()=>{                         
-                        console.log(this.props.NavigationStore.CurrentRoute)                         
-                        console.log(this.props.NavigationStore.ActiveNavigator)                         
+                        //console.log(this.props.NavigationStore.CurrentRoute)                         
+                        //console.log(this.props.NavigationStore.ActiveNavigator)                         
                         this.props.NavigationStore.navigate({ routeName: 'NavTwoSecond' })}}>
                         <Text style={Style.buttonText}>Screen 7</Text>
                     </Button>

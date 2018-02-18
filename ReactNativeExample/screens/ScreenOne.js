@@ -13,31 +13,31 @@ class ScreenOne extends Component {
         title: 'ScreenOne',
       }
     render() {
-        // console.log(this.props)
-        // console.log(this.props.NavigationStore.getNavigator('Main').navigation,this.props.navigation)
+        // //console.log(this.props)
+        // //console.log(this.props.NavigationStore.getNavigator('Main').navigation,this.props.navigation)
         // this.props.NavigationStore.setNavigation('Main',this.props.navigation)
         return (
             <View style={Style.container}>
                     <View style={{ flexDirection: 'row' }}>
                         <Button style={Style.button} onPress={() => {
-                            console.log(this.props.NavigationStore.CurrentRoute)
-                            console.log(this.props.NavigationStore.ActiveNavigator)
-                            console.log(this.props.NavigationStore.AllNavigatorsStacks)
+                            //console.log(this.props.NavigationStore.CurrentRoute)
+                            //console.log(this.props.NavigationStore.ActiveNavigator)
+                            //console.log(this.props.NavigationStore.AllNavigatorsStacks)
                             this.props.NavigationStore.navigate({ routeName: 'MainSecond' })
                         }}>
                             <Text style={Style.buttonText}>Screen 2</Text>
                         </Button>
                         <Button style={Style.button} onPress={() => {
-                            console.log(this.props.NavigationStore.CurrentRoute)
-                            console.log(this.props.NavigationStore.ActiveNavigator)
-                            console.log(this.props.NavigationStore.AllNavigatorsStacks)
+                            //console.log(this.props.NavigationStore.CurrentRoute)
+                            //console.log(this.props.NavigationStore.ActiveNavigator)
+                            //console.log(this.props.NavigationStore.AllNavigatorsStacks)
                             this.props.NavigationStore.navigate({ routeName: 'MainThird' })
                         }}>
                             <Text style={Style.buttonText}>Screen 3</Text>
                         </Button>
                         <Button style={[Style.button,{backgroundColor:'#B4D2BA'}]} onPress={() => {
-                            console.log(this.props.NavigationStore.CurrentRoute)
-                            console.log(this.props.NavigationStore.ActiveNavigator)
+                            //console.log(this.props.NavigationStore.CurrentRoute)
+                            //console.log(this.props.NavigationStore.ActiveNavigator)
                             this.props.NavigationStore.navigate({ routeName: 'NestedNavigator' })
                         }}>
                             <Text style={Style.buttonText}>Screen 4</Text>

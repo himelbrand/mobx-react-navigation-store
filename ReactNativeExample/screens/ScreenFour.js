@@ -18,15 +18,15 @@ class ScreenFour extends Component {
                 
                 <View style={{flexDirection:'row',justifyContent:'space-around'}}>
                     <Button style={Style.button} onPress={()=>{
-                        console.log(this.props.NavigationStore.CurrentRoute)
-                        console.log(this.props.NavigationStore.ActiveNavigator)
+                        //console.log(this.props.NavigationStore.CurrentRoute)
+                        //console.log(this.props.NavigationStore.ActiveNavigator)
                         this.props.NavigationStore.navigate({ routeName: 'NavOneSecond' })
                         }}>
                         <Text style={Style.buttonText}>Screen 5</Text>
                     </Button>
                     <Button style={[Style.button,{backgroundColor:'#D89352'}]} onPress={()=>{                         
-                        console.log(this.props.NavigationStore.CurrentRoute)                         
-                        console.log(this.props.NavigationStore.ActiveNavigator)                         
+                        //console.log(this.props.NavigationStore.CurrentRoute)                         
+                        //console.log(this.props.NavigationStore.ActiveNavigator)                         
                         this.props.NavigationStore.navigate({ routeName: 'NestedNavigator' })}}>
                         <Text style={Style.buttonText}>Screen 6</Text>
                     </Button>

@@ -5,28 +5,44 @@ import {
     AsyncStorage,
     Keyboard
 } from 'react-native';
-import { StackNavigator, NavigationActions,TabNavigator } from 'react-navigation'
+import { StackNavigator, NavigationActions, TabNavigator } from 'react-navigation'
 import { observer, Provider } from 'mobx-react/native'
 import { create } from 'mobx-persist'
 import NavigationStore from 'mobx-react-navigation-store'
-import { Home, SplashScreen } from '../screens'
+import { Home, SplashScreen, Second } from '../screens'
 import MainStack from './MainStack'
-import {Header, Footer} from '../components'
+import { Header, Footer } from '../components'
 const hydrate = create({
-    storage: AsyncStorage
+    storage: AsyncStorage,
 })
 const stores = { NavigationStore }
 const Tabs = TabNavigator({
-    Home: {screen:Home},
-    Two: {screen:Home},
-    NestedNavigatorMain:{screen: MainStack}
-},{
-    initialRouteName: 'Home',
-    lazy:true,
-    lazyLoad:true
-})
-
+    Home: { screen: Home },
+    Two: { screen: Second },
+    NestedNavigatorMain: { 
+        screen: MainStack ,
+    }
+}, {
+        initialRouteName: 'Home',
+        lazy: true,
+        lazyLoad: true,
+    })
+let hydrated = false
+const result = hydrate('Nav', NavigationStore)
+const rehydrate = result.rehydrate
+result.then(() => {
     
+    NavigationStore.setNavigator('MainTabs', 'Home', 'tab',{NestedNavigatorMain:'Main'}, null,true,['Home','Two','NestedNavigatorMain'])
+    NavigationStore.setNavigator('Main', 'MainFirst', 'stack',{NestedNavigator:'NavOne'} ,'MainTabs')
+    NavigationStore.setNavigator('NavOne', 'NavOneFirst', 'stack',{NestedNavigator:'NavTwo'} ,'Main')
+    NavigationStore.setNavigator('NavTwo', 'NavTwoFirst', 'stack', null ,'NavOne', false)
+    !NavigationStore.ActiveNavigator && NavigationStore.setActiveNavigator('MainTabs')
+    NavigationStore.setInitialNavigator('MainTabs')
+    setTimeout(() => NavigationStore.doneHydrating(), 1000)
+    NavigationStore.StartedStoreHydration()
+}).catch(error => console.log(error))
+
+
 
 @observer
 class Root extends Component {
@@ -39,41 +55,22 @@ class Root extends Component {
     }
     componentWillMount() {
         this.setState({ nowMounted: true })
-        hydrate('navigation', NavigationStore).then(() => {
-            try {
-                NavigationStore.setNavigator('MainTabs','Home','tab',null,false,['Home','Two','NestedNavigatorMain'])
-                NavigationStore.setNavigator('Main', 'MainFirst','stack','MainTabs')
-                NavigationStore.setNavigator('NavOne','NavOneFirst','stack','Main')
-                NavigationStore.setNavigator('NavTwo','NavTwoFirst','stack','NavOne',false)
-                if (!NavigationStore.ActiveNavigator)
-                    NavigationStore.setActiveNavigator('MainTabs')
-                NavigationStore.setInitialNavigator('MainTabs')
-            } catch (err) {
-                console.log(err)
-            }
-            this.setState({hydrated:true})
-            setTimeout(()=>NavigationStore.doneHydrating(),1000)
-            
-        }).catch(error => console.log(error))
+
     }
-    componentDidMount(){
-        if(NavigationStore.storeHydrated)
+    componentDidMount() {
+        if (NavigationStore.storeHydrated)
             NavigationStore.setActiveNavigator('MainTabs')
 
     }
     render() {
-        const splashDone = NavigationStore.storeHydrated
-        console.log(NavigationStore.ActiveNavigator)
+        const splashDone =  NavigationStore.storeHydrated
         return (
             <View style={{ flex: 1, justifyContent: 'space-around' }}>
                 {!splashDone && <SplashScreen /> }
-                {this.state.hydrated && <Provider {...stores}>
-                    
+                {NavigationStore.startedStoreHydration && <Provider {...stores}>
                     <Tabs
                         ref={ref => {
-                            console.log(ref,NavigationStore.getNavigator('MainTabs'))
-
-                            if (ref &&  (!NavigationStore.getNavigator('MainTabs').navigation || this.state.nowMounted)) {
+                            if (ref && (!NavigationStore.getNavigator('MainTabs').navigation || this.state.nowMounted)) {
                                 this.setState({ nowMounted: false })
                                 try {
                                     console.log('set MainTabs Nav')
@@ -85,15 +82,16 @@ class Root extends Component {
                         }}
                         onNavigationStateChange={(oldState, newState, action) => {
                             try {
-                                NavigationStore.handleAction('MainTabs', action)
+                                NavigationStore.handleAction('MainTabs', action,newState)
 
                             } catch (err) {
                                 console.log(err)
                             }
                         }}
+                        screenProps={{}}
                     />
                 </Provider>}
-                
+
             </View>
         )
     }

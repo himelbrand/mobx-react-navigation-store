@@ -15,20 +15,20 @@ class ScreenThree extends Component {
             <View style={Style.container}>
                 <View style={{flexDirection:'row'}}>
                     <Button style={Style.button} onPress={()=>{                         
-                        console.log(this.props.NavigationStore.CurrentRoute)                         
-                        console.log(this.props.NavigationStore.ActiveNavigator)                         
+                        //console.log(this.props.NavigationStore.CurrentRoute)                         
+                        //console.log(this.props.NavigationStore.ActiveNavigator)                         
                         this.props.NavigationStore.navigate({ routeName: 'MainFirst' })}}>
                         <Text style={Style.buttonText}>Screen 1</Text>
                     </Button>
                     <Button style={Style.button} onPress={()=>{                         
-                        console.log(this.props.NavigationStore.CurrentRoute)                         
-                        console.log(this.props.NavigationStore.ActiveNavigator)                         
+                        //console.log(this.props.NavigationStore.CurrentRoute)                         
+                        //console.log(this.props.NavigationStore.ActiveNavigator)                         
                         this.props.NavigationStore.navigate({ routeName: 'MainSecond' })}}>
                         <Text style={Style.buttonText}>Screen 2</Text>
                     </Button>
                     <Button style={[Style.button,{backgroundColor:'#B4D2BA'}]} onPress={()=>{                         
-                        console.log(this.props.NavigationStore.CurrentRoute)                         
-                        console.log(this.props.NavigationStore.ActiveNavigator)                         
+                        //console.log(this.props.NavigationStore.CurrentRoute)                         
+                        //console.log(this.props.NavigationStore.ActiveNavigator)                         
                         this.props.NavigationStore.navigate({ routeName: 'NestedNavigator' })}}>
                         <Text style={Style.buttonText}>Screen 4</Text>
                     </Button>

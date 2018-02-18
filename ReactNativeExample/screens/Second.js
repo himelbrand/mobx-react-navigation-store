@@ -10,13 +10,13 @@ class Home extends Component {
         super(props)
     }
     render() {
-        //console.log(this.props)
+        //this.props.NavigationStore.setActiveNavigator('MainTabs')
 
         return (
             <View style={Style.container}>
                     <Text onPress={()=>{
                         console.log('home')
-                        this.props.NavigationStore.navigate({routeName:'Two'})}}>Home Screen</Text>
+                        this.props.NavigationStore.navigate({routeName:'NestedNavigatorMain'})}}>Second Screen</Text>
             </View>
         )
     }
