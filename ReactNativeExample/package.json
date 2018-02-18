@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "mobx-react": "^4.4.1",
-    "mobx-react-navigation-store": "^0.2.0",
+    "mobx-react-navigation-store": "^0.3.0",
     "react": "16.2.0",
     "react-native": "0.53.0"
   },
