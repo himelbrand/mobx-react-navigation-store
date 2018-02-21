@@ -27,7 +27,7 @@ class ScreenFive extends Component {
                         //console.log(this.props.NavigationStore.CurrentRoute)                         
                         //console.log(this.props.NavigationStore.ActiveNavigator)                         
                         this.props.NavigationStore.navigate({ routeName: 'NestedNavigator' })}}>
-                        <Text style={Style.buttonText}>Screen 6</Text>
+                        <Text style={Style.buttonText}>Nested Tabs</Text>
                     </Button>
                 </View>
             </View>
@@ -37,7 +37,7 @@ class ScreenFive extends Component {
 }
 const Style = StyleSheet.create({
     container: {
-        backgroundColor: '#B4D2BA',
+        backgroundColor: '#60B2E5',
         flex: 1,
         justifyContent: 'space-around'
     },

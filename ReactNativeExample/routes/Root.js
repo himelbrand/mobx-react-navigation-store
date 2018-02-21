@@ -20,12 +20,13 @@ const Tabs = TabNavigator({
     Home: { screen: Home },
     Two: { screen: Second },
     NestedNavigatorMain: { 
-        screen: MainStack ,
+        screen: MainStack
     }
 }, {
         initialRouteName: 'Home',
         lazy: true,
         lazyLoad: true,
+        backBehavior:'none'
     })
 let hydrated = false
 const result = hydrate('Nav', NavigationStore)
@@ -35,7 +36,7 @@ result.then(() => {
     NavigationStore.setNavigator('MainTabs', 'Home', 'tab',{NestedNavigatorMain:'Main'}, null,true,['Home','Two','NestedNavigatorMain'])
     NavigationStore.setNavigator('Main', 'MainFirst', 'stack',{NestedNavigator:'NavOne'} ,'MainTabs')
     NavigationStore.setNavigator('NavOne', 'NavOneFirst', 'stack',{NestedNavigator:'NavTwo'} ,'Main')
-    NavigationStore.setNavigator('NavTwo', 'NavTwoFirst', 'stack', null ,'NavOne', false)
+    NavigationStore.setNavigator('NavTwo', 'NavTwoFirst', 'tab', null ,'NavOne', true,['NavTwoFirst','NavTwoSecond'])
     !NavigationStore.ActiveNavigator && NavigationStore.setActiveNavigator('MainTabs')
     NavigationStore.setInitialNavigator('MainTabs')
     setTimeout(() => NavigationStore.doneHydrating(), 1000)

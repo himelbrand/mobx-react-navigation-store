@@ -3115,14 +3115,14 @@ mobx-persist@^0.4.1:
   dependencies:
     serializr "^1.1.11"
 
-mobx-react-navigation-store@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/mobx-react-navigation-store/-/mobx-react-navigation-store-0.3.0.tgz#6737f1055d8ad2664856a5de39108abe940f2a6c"
+mobx-react-navigation-store@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/mobx-react-navigation-store/-/mobx-react-navigation-store-0.4.0.tgz#00188ce93e60dd8ce2b8d0a74343a768092af3dd"
   dependencies:
     mobx "^3.4.1"
     mobx-persist "^0.4.1"
     mobx-react "^4.4.1"
-    react-navigation "^1.0.0-beta.29"
+    react-navigation "^1.1.2"
 
 mobx-react@^4.4.1:
   version "4.4.1"
@@ -3662,6 +3662,12 @@ react-native-drawer-layout@1.3.2:
   dependencies:
     react-native-dismiss-keyboard "1.0.0"
 
+react-native-safe-area-view@^0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/react-native-safe-area-view/-/react-native-safe-area-view-0.7.0.tgz#38f5ab9368d6ef9e5d18ab64212938af3ec39421"
+  dependencies:
+    hoist-non-react-statics "^2.3.1"
+
 react-native-tab-view@^0.0.74:
   version "0.0.74"
   resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-0.0.74.tgz#62c0c882d9232b461ce181d440d683b4f99d1bd8"
@@ -3727,15 +3733,16 @@ react-native@0.53.0:
     xmldoc "^0.4.0"
     yargs "^9.0.0"
 
-react-navigation@^1.0.0-beta.29:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/react-navigation/-/react-navigation-1.0.0.tgz#a808ab035ab5243d99f9e194d13811052bd9a835"
+react-navigation@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/react-navigation/-/react-navigation-1.1.2.tgz#6e041b8a3cd0f5266072df0b52a55117892875f2"
   dependencies:
     clamp "^1.0.1"
     hoist-non-react-statics "^2.2.0"
     path-to-regexp "^1.7.0"
     prop-types "^15.5.10"
     react-native-drawer-layout-polyfill "^1.3.2"
+    react-native-safe-area-view "^0.7.0"
     react-native-tab-view "^0.0.74"
 
 react-proxy@^1.1.7:

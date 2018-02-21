@@ -24,7 +24,7 @@ class Header extends Component {
                     <Text style={Style.buttonText}>{'<'}back</Text>
                 </Button>: null }
 
-                <Text style={[Style.title, flag ? {marginLeft:25} :{}]}>
+                <Text style={[Style.title, flag ? {marginLeft:70} :{}]}>
                     {NavigationStore.CurrentRoute}
                 </Text>
                 </View>

@@ -5,19 +5,30 @@ import {
     AsyncStorage,
     Keyboard
 } from 'react-native';
-import { StackNavigator, NavigationActions } from 'react-navigation'
+import { TabNavigator, NavigationActions } from 'react-navigation'
 import { observer, inject } from 'mobx-react/native'
 import { create } from 'mobx-persist'
 import { ScreenSix, ScreenSeven } from '../screens'
+import NavigationStore from 'mobx-react-navigation-store'
 
-const NavTwo = StackNavigator(
+const NavTwo = TabNavigator(
     {
         NavTwoFirst: { screen: ScreenSix,title:'NavTwoFirst' },
         NavTwoSecond: { screen: ScreenSeven ,title:'NavTwoSecond'},
     }, {
-       headerMode: 'none',
+        headerMode: 'none',
         lazy: true,
         initialRouteName: 'NavTwoFirst',
+        tabBarPosition: 'top',
+        navigationOptions:{
+            tabBarOnPress:(nav) => {
+                console.log('gdsgsgsgsdsgsgsgdg',nav,NavigationStore)
+                const navigator = NavigationStore.getNavigator('NavTwo')
+                navigator.setJumpIndexFunction(nav.jumpToIndex)
+                NavigationStore.navigate(nav.scene.route)
+            }
+        }
+
     }
 )
 
@@ -47,8 +58,9 @@ class NavigatorTwo extends Component {
                     }
                 }}
                 onNavigationStateChange={(oldState,newState,action) => {
-                    this.props.NavigationStore.handleAction('NavTwo',action)
+                    this.props.NavigationStore.handleAction('NavTwo',action,newState)
                 }}
+                
                 />
         )
     }

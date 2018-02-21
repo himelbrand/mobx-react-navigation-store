@@ -40,7 +40,7 @@ class ScreenThree extends Component {
 }
 const Style = StyleSheet.create({
     container: {
-        backgroundColor: '#8ED081',
+        backgroundColor: '#E4959E',
         flex: 1,
         justifyContent: 'space-around'
     },

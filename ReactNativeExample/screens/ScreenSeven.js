@@ -17,12 +17,7 @@ class ScreenSeven extends Component {
             <View style={Style.container}>
                 
             
-                    <Button style={Style.button} onPress={()=>{                         
-                        //console.log(this.props.NavigationStore.CurrentRoute)                         
-                        //console.log(this.props.NavigationStore.ActiveNavigator)                         
-                        this.props.NavigationStore.navigate({ routeName: 'NavTwoFirst' })}}>
-                        <Text style={Style.buttonText}>Screen 6</Text>
-                    </Button>
+                <Text style={Style.text}>Screen 7</Text>
             </View>
         )
     }
@@ -30,18 +25,14 @@ class ScreenSeven extends Component {
 }
 const Style = StyleSheet.create({
     container: {
-        backgroundColor: '#D89352',
+        backgroundColor: '#E15634',
         flex: 1,
         justifyContent: 'space-around',
         alignItems:'center'
     },
-    h1: {
-        fontSize: 35,
-        color: 'red'
-    },
     text: {
-        fontSize: 20,
-        color: '#003344'
+        fontSize: 35,
+        color: 'white'
     },
     button: {
         width: 100,

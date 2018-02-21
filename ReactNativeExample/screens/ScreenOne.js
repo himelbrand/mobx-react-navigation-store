@@ -50,7 +50,7 @@ class ScreenOne extends Component {
 }
 const Style = StyleSheet.create({
     container: {
-        backgroundColor: '#8ED081',
+        backgroundColor: '#F3B3A6',
         flex: 1,
         justifyContent: 'space-around',
         alignItems: 'center'

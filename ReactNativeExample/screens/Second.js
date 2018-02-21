@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { View, Text, StyleSheet, Dimensions } from 'react-native'
-import { Button } from '../components'
+import { Button, Footer} from '../components'
 import { observer, inject } from 'mobx-react/native';
 
 @inject('NavigationStore')
@@ -14,9 +14,12 @@ class Home extends Component {
 
         return (
             <View style={Style.container}>
-                    <Text onPress={()=>{
-                        console.log('home')
-                        this.props.NavigationStore.navigate({routeName:'NestedNavigatorMain'})}}>Second Screen</Text>
+                <Text style={Style.text} onPress={() => {
+                    console.log('home')
+                    this.props.NavigationStore.navigate({ routeName: 'NestedNavigatorMain' })
+                }}>Second Screen</Text>
+                <Footer />
+
             </View>
         )
     }
@@ -24,20 +27,16 @@ class Home extends Component {
 }
 const Style = StyleSheet.create({
     container: {
-        backgroundColor: '#8ED081',
+        backgroundColor: '#574B60',
         flex: 1,
         justifyContent: 'space-around',
         alignItems: 'center'
     },
-    h1: {
-        fontSize: 35,
-        color: 'red',
-    },
     text: {
-        fontSize: 50,
-        color: 'black',
-        margin: 100,
-        backgroundColor: 'blue'
+        fontSize: 35,
+        color: 'white',
+        margin: 10,
+        backgroundColor: 'transparent'
     },
     button: {
         width: 100,

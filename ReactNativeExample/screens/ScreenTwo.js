@@ -33,7 +33,7 @@ class ScreenTwo extends Component {
                         //console.log(this.props.NavigationStore.CurrentRoute)                         
                         //console.log(this.props.NavigationStore.ActiveNavigator)                         
                         this.props.NavigationStore.navigate({ routeName: 'NestedNavigator' })}}>
-                        <Text style={Style.buttonText}>Screen 4</Text>
+                        <Text>Screen 4</Text>
                     </Button>
                 </View>
             </View>
@@ -43,7 +43,7 @@ class ScreenTwo extends Component {
 }
 const Style = StyleSheet.create({
     container: {
-        backgroundColor: '#8ED081',
+        backgroundColor: '#4D243D',
         flex: 1,
         justifyContent: 'space-around'
     },
@@ -64,6 +64,9 @@ const Style = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         borderRadius: 40
+    },
+    buttonText:{
+        color:'white'
     }
 })
 export default ScreenTwo

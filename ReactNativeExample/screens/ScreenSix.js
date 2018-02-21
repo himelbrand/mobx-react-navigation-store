@@ -15,14 +15,11 @@ class ScreenSix extends Component {
 
         return (
             <View style={Style.container}>
-                <View>
-                    <Button style={Style.button} onPress={()=>{                         
-                        //console.log(this.props.NavigationStore.CurrentRoute)                         
-                        //console.log(this.props.NavigationStore.ActiveNavigator)                         
-                        this.props.NavigationStore.navigate({ routeName: 'NavTwoSecond' })}}>
-                        <Text style={Style.buttonText}>Screen 7</Text>
-                    </Button>
-                </View>
+              
+                    
+                        <Text style={Style.text}>Screen 6</Text>
+                  
+               
             </View>
         )
     }
@@ -30,18 +27,14 @@ class ScreenSix extends Component {
 }
 const Style = StyleSheet.create({
     container: {
-        backgroundColor: '#D89352',
+        backgroundColor: '#FF7733',
         flex: 1,
         justifyContent: 'space-around',
         alignItems:'center'
     },
-    h1: {
-        fontSize: 35,
-        color: 'red'
-    },
     text: {
-        fontSize: 20,
-        color: '#003344'
+        fontSize: 35,
+        color: 'white'
     },
     button: {
         width: 100,
