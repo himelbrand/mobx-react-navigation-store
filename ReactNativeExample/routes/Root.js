@@ -9,7 +9,7 @@ import { StackNavigator, NavigationActions, TabNavigator,DrawerNavigator } from 
 import { observer, Provider } from 'mobx-react/native'
 import { create } from 'mobx-persist'
 import NavigationStore from 'mobx-react-navigation-store'
-import { Home, SplashScreen, Second } from '../screens'
+import { DrawerHome, SplashScreen, DrawerTwo } from '../screens'
 import MainTabs from './MainTabs'
 import { Header, Footer, DrawerButton } from '../components'
 const hydrate = create({
@@ -17,8 +17,8 @@ const hydrate = create({
 })
 const stores = { NavigationStore }
 const Drawer = DrawerNavigator({
-    Home: { screen: Home },
-    Two: { screen: Second },
+    Home: { screen: DrawerHome },
+    Two: { screen: DrawerTwo },
     NestedNavigatorTabs: { 
         screen: MainTabs
     }

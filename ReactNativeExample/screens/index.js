@@ -8,6 +8,8 @@ import ScreenSix from './ScreenSix'
 import ScreenSeven from './ScreenSeven'
 import Home from './Home'
 import Second from './Second'
+import DrawerTwo from './DrawerTwo'
+import DrawerHome from './DrawerHome'
 export {
     SplashScreen,
     ScreenOne,
@@ -18,5 +20,7 @@ export {
     ScreenSix,
     ScreenSeven,
     Home,
-    Second
+    Second,
+    DrawerTwo,
+    DrawerHome
 }
