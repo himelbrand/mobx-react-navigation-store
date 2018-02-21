@@ -57,7 +57,7 @@ class NavigatorTwo extends Component {
                     }
                 }}
                 onNavigationStateChange={(oldState,newState,action) => {
-                    this.props.NavigationStore.handleAction('NavTwo',action,newState)
+                    this.props.NavigationStore.handleAction('NavTwo',oldState, newState, action)
                 }}
                 
                 />

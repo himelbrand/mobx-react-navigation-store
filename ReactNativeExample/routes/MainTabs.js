@@ -9,27 +9,34 @@ import { StackNavigator, NavigationActions, TabNavigator } from 'react-navigatio
 import { observer, inject } from 'mobx-react/native'
 import { create } from 'mobx-persist'
 import NavigationStore from 'mobx-react-navigation-store'
-import { ScreenOne, ScreenTwo, ScreenThree } from '../screens'
-import NavigatorOne from './NavigatorOne'
+import { Home, Second } from '../screens'
+import MainStack from './MainStack'
 import { Header, Footer } from '../components'
 
-const Main = StackNavigator(
-    {
-        MainFirst: { screen: ScreenOne, title: 'MainFirst' },
-        MainSecond: { screen: ScreenTwo, title: 'MainSecond' },
-        MainThird: { screen: ScreenThree, title: 'MainThird' },
-        NestedNavigator: { screen: NavigatorOne },
-    }, {
-        headerMode: 'none',
-        lazy: true,
-        initialRouteName: 'MainFirst',
+const Tabs = TabNavigator({
+    Home: { screen: Home },
+    Two: { screen: Second },
+    NestedNavigatorMain: { 
+        screen: MainStack
     }
-
-)
+}, {
+        initialRouteName: 'Home',
+        lazy: true,
+        lazyLoad: true,
+        backBehavior:'none',
+        navigationOptions:{
+            tabBarOnPress:(nav) => {
+                const navigator = NavigationStore.getNavigator('MainTabs')
+                NavigationStore.setActiveNavigator('MainTabs')
+                navigator.setJumpIndexFunction(nav.jumpToIndex)
+                NavigationStore.navigate(nav.scene.route)
+            }
+        }
+    })
 
 @inject('NavigationStore')
 @observer
-class MainStack extends Component {
+class MainTabs extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -41,18 +48,17 @@ class MainStack extends Component {
     }
     componentDidMount() {
         this.setState({ nowMounted: true })
-        this.props.NavigationStore.setActiveNavigator('Main')
+        this.props.NavigationStore.setActiveNavigator('MainTabs')
     }
     render() {
                 return (
-            <View style={{ flex: 1 }}>
-                <Header />
-                <Main
+            <View style={{flex:1}}>
+                <Tabs
                     ref={ref => {
-                        if (ref && (!this.props.NavigationStore.getNavigator('Main').navigation || this.state.nowMounted)) {
+                        if (ref && (!this.props.NavigationStore.getNavigator('MainTabs').navigation || this.state.nowMounted)) {
                             this.setState({ nowMounted: false })
                             try {
-                                this.props.NavigationStore.setNavigation('Main', ref._navigation)
+                                this.props.NavigationStore.setNavigation('MainTabs', ref._navigation)
                             } catch (err) {
                                 console.log(err)
                             }
@@ -60,17 +66,16 @@ class MainStack extends Component {
                     }}
                     onNavigationStateChange={(oldState, newState, action) => {
                         try {
-                            this.props.NavigationStore.handleAction('Main', oldState, newState, action)
+                            this.props.NavigationStore.handleAction('MainTabs', oldState, newState, action)
 
                         } catch (err) {
                             console.log(err)
                         }
                     }}
                 />
-                <Footer />
             </View>
 
         )
     }
 }
-export default MainStack
+export default MainTabs

@@ -1,6 +1,6 @@
 {
   "name": "mobx-react-navigation-store",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "description": "mobx navigation store for nested navigators using react navigation, including persist when needed.",
   "main": "index.js",
   "scripts": {

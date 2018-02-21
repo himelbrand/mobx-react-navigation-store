@@ -5,40 +5,39 @@ import {
     AsyncStorage,
     Keyboard
 } from 'react-native';
-import { StackNavigator, NavigationActions, TabNavigator } from 'react-navigation'
+import { StackNavigator, NavigationActions, TabNavigator,DrawerNavigator } from 'react-navigation'
 import { observer, Provider } from 'mobx-react/native'
 import { create } from 'mobx-persist'
 import NavigationStore from 'mobx-react-navigation-store'
 import { Home, SplashScreen, Second } from '../screens'
-import MainStack from './MainStack'
-import { Header, Footer } from '../components'
+import MainTabs from './MainTabs'
+import { Header, Footer, DrawerButton } from '../components'
 const hydrate = create({
     storage: AsyncStorage,
 })
 const stores = { NavigationStore }
-const Tabs = TabNavigator({
+const Drawer = DrawerNavigator({
     Home: { screen: Home },
     Two: { screen: Second },
-    NestedNavigatorMain: { 
-        screen: MainStack
+    NestedNavigatorTabs: { 
+        screen: MainTabs
     }
 }, {
         initialRouteName: 'Home',
         lazy: true,
-        lazyLoad: true,
-        backBehavior:'none'
     })
 let hydrated = false
 const result = hydrate('Nav', NavigationStore)
 const rehydrate = result.rehydrate
 result.then(() => {
-    
+    NavigationStore.setNavigator('MainDrawer', 'Home', 'drawer',{NestedNavigatorTabs:'MainTabs'}, null,true)
     NavigationStore.setNavigator('MainTabs', 'Home', 'tab',{NestedNavigatorMain:'Main'}, null,true,['Home','Two','NestedNavigatorMain'])
     NavigationStore.setNavigator('Main', 'MainFirst', 'stack',{NestedNavigator:'NavOne'} ,'MainTabs')
     NavigationStore.setNavigator('NavOne', 'NavOneFirst', 'stack',{NestedNavigator:'NavTwo'} ,'Main')
     NavigationStore.setNavigator('NavTwo', 'NavTwoFirst', 'tab', null ,'NavOne', true,['NavTwoFirst','NavTwoSecond'])
-    !NavigationStore.ActiveNavigator && NavigationStore.setActiveNavigator('MainTabs')
-    NavigationStore.setInitialNavigator('MainTabs')
+    !NavigationStore.ActiveNavigator && NavigationStore.setActiveNavigator('MainDrawer')
+    NavigationStore.setInitialNavigator('MainDrawer')
+    NavigationStore.setOrder(['MainDrawer','MainTabs','Main','NavOne','NavTwo'])
     setTimeout(() => NavigationStore.doneHydrating(), 1000)
     NavigationStore.StartedStoreHydration()
 }).catch(error => console.log(error))
@@ -60,22 +59,22 @@ class Root extends Component {
     }
     componentDidMount() {
         if (NavigationStore.storeHydrated)
-            NavigationStore.setActiveNavigator('MainTabs')
+            NavigationStore.setActiveNavigator('MainDrawer')
 
     }
     render() {
         const splashDone =  NavigationStore.storeHydrated
         return (
             <View style={{ flex: 1, justifyContent: 'space-around' }}>
-                {!splashDone && <SplashScreen /> }
+                {!splashDone ? <SplashScreen /> : <DrawerButton/> }
                 {NavigationStore.startedStoreHydration && <Provider {...stores}>
-                    <Tabs
+                    <Drawer
                         ref={ref => {
-                            if (ref && (!NavigationStore.getNavigator('MainTabs').navigation || this.state.nowMounted)) {
+                            if (ref && (!NavigationStore.getNavigator('MainDrawer').navigation || this.state.nowMounted)) {
                                 this.setState({ nowMounted: false })
                                 try {
                                     console.log('set MainTabs Nav')
-                                    NavigationStore.setNavigation('MainTabs', ref._navigation)
+                                    NavigationStore.setNavigation('MainDrawer', ref._navigation)
                                 } catch (err) {
                                     console.log(err)
                                 }
@@ -83,7 +82,7 @@ class Root extends Component {
                         }}
                         onNavigationStateChange={(oldState, newState, action) => {
                             try {
-                                NavigationStore.handleAction('MainTabs', action,newState)
+                                NavigationStore.handleAction('MainDrawer', oldState, newState, action)
 
                             } catch (err) {
                                 console.log(err)

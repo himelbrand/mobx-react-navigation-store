@@ -51,7 +51,7 @@ class NavigatorOne extends Component {
                     }
                 }}
                 onNavigationStateChange={(oldState,newState,action) => {
-                    this.props.NavigationStore.handleAction('NavOne',action)
+                    this.props.NavigationStore.handleAction('NavOne',oldState, newState, action)
                 }}
                 />
             

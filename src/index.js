@@ -38,12 +38,6 @@ class NavigatorPersist {
         this.shouldPersist = flag
     }
 }
-class MyIndex {
-    @persist @observable i = 0
-    constructor(i) {
-        this.i = i
-    }
-}
 class StackNavigatorPersist extends NavigatorPersist {
 
     @persist('list', RoutePersist) @observable currentStack = []
@@ -57,6 +51,35 @@ class StackNavigatorPersist extends NavigatorPersist {
         this.currentRoute = new RoutePersist(route.routeName, route.params)
     }
 }
+
+class DrawerNavigatorPersist extends NavigatorPersist {
+    @persist('list', RoutePersist) @observable currentStack = []
+    constructor(shouldPersist, initRoute, nested, parent, name) {
+        super(shouldPersist, initRoute, nested, parent, name)
+    }
+    @action setRoute(route) {
+        if (this.currentRoute && (this.currentRoute.routeName !== route.routeName || (route.params && this.currentRoute.params != route.params))) {
+            this.currentStack.push(this.currentRoute)
+        }
+        this.currentRoute = new RoutePersist(route.routeName, route.params)
+    }
+    open(){
+        if(this.navigation){
+            this.navigation.navigate('DrawerOpen')
+        }
+    }
+    close(){
+        if(this.navigation){
+            this.navigation.navigate('DrawerClose')
+        }
+    }
+    toggle(){
+        if(this.navigation){
+            this.navigation.navigate('DrawerToggle')
+        }
+    }
+}
+
 class TabNavigatorPersist extends NavigatorPersist {
     @persist @observable tabIndex = 0
     @persist @observable initIndex = 0
@@ -75,12 +98,11 @@ class TabNavigatorPersist extends NavigatorPersist {
                 this.stackOfIndexes.push(this.tabIndex)
             this.tabIndex = index
             if (this.jumpIndexFunction) {
-                console.log('jump to ', index)
                 this.jumpIndexFunction(index)
             }
         }
     }
-    @action setRoute(route, index,isNew = true) {
+    @action setRoute(route, index, isNew = true) {
         this.setIndex(index, isNew)
         this.currentRoute = new RoutePersist(route.routeName, route.params)
     }
@@ -94,6 +116,8 @@ class NavigationStore {
     @observable storeHydrated = false
     @persist('map', StackNavigatorPersist) @observable stackNavigators = new Map()
     @persist('map', TabNavigatorPersist) @observable tabNavigators = new Map()
+    @persist('map', DrawerNavigatorPersist) @observable drawerNavigators = new Map()
+    @persist('list') @observable order = []
     @persist @observable activeNavigator = ''
     @persist @observable initialNavigator = ''
 
@@ -103,6 +127,9 @@ class NavigationStore {
                 this.stackNavigators.set(name, new StackNavigatorPersist(shouldPersist, initRoute, nested, parent, name))
             else if (type === 'tab')
                 this.tabNavigators.set(name, new TabNavigatorPersist(shouldPersist, initRoute, nested, parent, name, routes))
+            else if (type === 'drawer')
+                this.drawerNavigators.set(name, new DrawerNavigatorPersist(shouldPersist, initRoute, nested, parent, name,false))
+
             console.log(`new Navigator set: ${name}, if this is not a new navigator name, all of the stack info is now erased`)
         } else if (this.hasNavigator(name)) {
             console.log(`${name} is already set`)
@@ -119,11 +146,15 @@ class NavigationStore {
     @action StartedStoreHydration() {
         this.startedStoreHydration = true
     }
+    @action setOrder(order) {
+        if(JSON.stringify(this.order) !== JSON.stringify(order))
+            this.order = order
+    }
     @action setActiveNavigator(navigatorName) {
         console.log('set active:', navigatorName)
-        if (this.hasNavigator(navigatorName))
+        if (this.hasNavigator(navigatorName)) {
             this.activeNavigator = navigatorName
-        else
+        } else
             throw new Error('no navigator with the given name')
     }
     @action setInitialNavigator(navigatorName) {
@@ -132,7 +163,7 @@ class NavigationStore {
         else
             throw new Error('no navigator with the given name')
     }
-    @action handleAction(navigatorName, action, newState) {
+    @action handleAction(navigatorName, oldState, newState, action) {
         if (!action || !navigatorName)
             throw new Error('invalid params')
         if (this.hasNavigator(navigatorName)) {
@@ -150,9 +181,10 @@ class NavigationStore {
                         newNav = this.getNavigator(this.activeNavigator)
                     }
                 }
-                navigator instanceof TabNavigatorPersist ?
-                    navigator.setRoute({ routeName: action.routeName, params: action.params }, newState.index) :
-                    navigator.setRoute({ routeName: action.routeName, params: action.params })
+                if (action.routeName !== 'DrawerOpen' && action.routeName !== 'DrawerClose' && action.routeName !== 'DrawerToggle')
+                    navigator instanceof TabNavigatorPersist ?
+                        navigator.setRoute({ routeName: action.routeName, params: action.params }, newState.index) :
+                        navigator.setRoute({ routeName: action.routeName, params: action.params })
                 navigator instanceof TabNavigatorPersist && console.log(navigator.tabIndex)
             } else if (action.type === 'Navigation/RESET') {
                 action.actions.forEach(resetAction => {
@@ -161,7 +193,8 @@ class NavigationStore {
                             const newNavName = navigator.nested[resetAction.routeName]
                             this.setActiveNavigator(newNavName)
                         }
-                        navigator.setRoute({ routeName: resetAction.routeName, params: resetAction.params })
+                        if (resetAction.routeName !== 'DrawerOpen' && resetAction.routeName !== 'DrawerClose' && resetAction.routeName !== 'DrawerToggle')
+                            navigator.setRoute({ routeName: resetAction.routeName, params: resetAction.params })
                     }
                 })
             } else {
@@ -178,15 +211,14 @@ class NavigationStore {
         const activeNavigator = this.getNavigator(this.activeNavigator)
         const navigation = activeNavigator && activeNavigator.navigation
         const currentRoute = activeNavigator && activeNavigator.currentRoute
-        console.log(activeNavigator)
         if ((navigation && (currentRoute && (currentRoute.routeName !== route.routeName || (route.params && currentRoute.params !== route.params)))) || navigation) {
             navigation.dispatch(navigateAction)
         }
-        console.log(this.AllNavigatorsStacks)
+        
     }
     @action goBack(needAction = false) {
         const navigator = this.getNavigator(this.activeNavigator)
-        if (navigator instanceof StackNavigatorPersist) {
+        if (navigator instanceof StackNavigatorPersist || navigator instanceof DrawerNavigatorPersist) {
             if (navigator.currentStack.length > 0)
                 navigator.currentRoute = navigator.currentStack.pop()
             else if (navigator.parent && navigator.currentStack.length === 0) {
@@ -204,28 +236,28 @@ class NavigationStore {
         const parent = this.getNavigator(parentName)
         const parentNav = parent.navigation
         if (needAction) {
-            if (parent instanceof StackNavigatorPersist)
+            if (parent instanceof StackNavigatorPersist || navigator instanceof DrawerNavigatorPersist)
                 !parentNav.goBack() && parentNav.pop()
             else if (parent instanceof TabNavigatorPersist)
                 parentNav.goBack()
             while (parent.currentRoute && parent.currentRoute.routeName.includes('NestedNavigator')) {
-                if (parent instanceof StackNavigatorPersist)
+                if (parent instanceof StackNavigatorPersist || navigator instanceof DrawerNavigatorPersist)
                     parent.currentRoute = parent.currentStack.pop()
                 else if (parent instanceof TabNavigatorPersist) {
-                    parent.setRoute({ routeName: parent.routes[parent.tabIndex] },parent.stackOfIndexes.pop(),false)
+                    parent.setRoute({ routeName: parent.routes[parent.tabIndex] }, parent.stackOfIndexes.pop(), false)
 
                 }
             }
         }
-        else if (parent instanceof StackNavigatorPersist && parent.currentStack.length > 0) {
+        else if ((parent instanceof StackNavigatorPersist || navigator instanceof DrawerNavigatorPersist) && parent.currentStack.length > 0) {
             parent.currentRoute = parent.currentStack.pop()
             while (parent.currentRoute.routeName.includes('NestedNavigator'))
                 parent.currentRoute = parent.currentStack.pop()
         }
         else if (parent instanceof TabNavigatorPersist && parent.stackOfIndexes.length > 0) {
-            parent.setRoute({ routeName: parent.routes[parent.tabIndex] },parent.stackOfIndexes.pop(),false)
+            parent.setRoute({ routeName: parent.routes[parent.tabIndex] }, parent.stackOfIndexes.pop(), false)
             while (parent.currentRoute.includes('NestedNavigator') && parent.stackOfIndexes.length > 0) {
-                parent.setRoute({ routeName: parent.routes[parent.tabIndex] },parent.stackOfIndexes.pop(),false)
+                parent.setRoute({ routeName: parent.routes[parent.tabIndex] }, parent.stackOfIndexes.pop(), false)
             }
         }
         this.setActiveNavigator(parentName)
@@ -256,8 +288,8 @@ class NavigationStore {
                 NavigationActions.navigate({ routeName: navigator.initRoute })
             if (navigator instanceof TabNavigatorPersist)
                 navigator.tabIndex = navigator.initIndex
-            navigator instanceof StackNavigatorPersist ? navigator.currentStack.clear() : navigator.stackOfIndexes.clear()
-            navigator.currentRoute = navigator instanceof StackNavigatorPersist ? null : new RoutePersist(navigator.initRoute)
+            navigator instanceof StackNavigatorPersist || navigator instanceof DrawerNavigatorPersist ? navigator.currentStack.clear() : navigator.stackOfIndexes.clear()
+            navigator.currentRoute = navigator instanceof StackNavigatorPersist || navigator instanceof DrawerNavigatorPersist ? null : new RoutePersist(navigator.initRoute)
 
 
             navigator.navigation && navigator.navigation.dispatch(resetAction)
@@ -270,7 +302,7 @@ class NavigationStore {
 
     }
     @action doneHydrating(ready = true, delay = 1500) {
-        const stackNavigatorsNames = this.NavigatorsNames
+        const stackNavigatorsNames = this.order
         stackNavigatorsNames.forEach((name, index) => {
             const navigator = this.getNavigator(name)
             let actions = []
@@ -305,6 +337,13 @@ class NavigationStore {
 
                     navigator.currentRoute = new RoutePersist(navigator.initRoute)
                 }
+            } else if (navigator.shouldPersist && navigator instanceof DrawerNavigatorPersist) {
+                actions = navigator.currentStack.map((route) => ({routeName:route.routeName,params:route.params}))
+                if (navigator.currentRoute)
+                    actions.push({routeName:navigator.currentRoute.routeName,params:navigator.currentRoute.params})
+            } else if (navigator instanceof DrawerNavigatorPersist) {
+                navigator.currentStack.clear()
+                actions.push({ routeName: navigator.initRoute })
             }
             if (ready && navigator.navigation && actions.length >= 1 && navigator instanceof StackNavigatorPersist) {
                 let resetAction = NavigationActions.reset({
@@ -313,18 +352,21 @@ class NavigationStore {
                 })
                 navigator.currentRoute = null
                 navigator.navigation.dispatch(resetAction)
-            } else if (navigator instanceof StackNavigatorPersist && (!navigator.currentRoute || !ready)) {
+            }else  if (ready && navigator.navigation && actions.length >= 1 && navigator instanceof DrawerNavigatorPersist) {
+                navigator.currentRoute = null
+                actions.forEach((route)=>navigator.navigation.navigate(route))
+            }else if ((navigator instanceof StackNavigatorPersist || navigator instanceof DrawerNavigatorPersist) && (!navigator.currentRoute || !ready)) {
                 navigator.currentRoute = new RoutePersist(navigator.initRoute)
             }
         })
         setTimeout(() => this.storeHydrated = true, delay)
     }
     @computed get NavigatorsNames() {
-        return Array.from(this.stackNavigators.keys()).concat(Array.from(this.tabNavigators.keys()))
+        return Array.from(this.stackNavigators.keys()).concat(Array.from(this.tabNavigators.keys())).concat(Array.from(this.drawerNavigators.keys()))
     }
     getNavigatorStack(navigatorName) {
         const navigator = this.getNavigator(navigatorName)
-        return navigator instanceof StackNavigatorPersist ? navigator.currentStack.peek() : []
+        return navigator instanceof StackNavigatorPersist || navigator instanceof DrawerNavigatorPersist ? navigator.currentStack.peek() : []
     }
     @computed get AllNavigatorsStacks() {
         const names = this.NavigatorsNames
@@ -355,10 +397,12 @@ class NavigationStore {
         let ans = this.stackNavigators.get(navigatorName)
         if (!ans)
             ans = this.tabNavigators.get(navigatorName)
+        if (!ans)
+            ans = this.drawerNavigators.get(navigatorName)
         return ans
     }
     hasNavigator(navigatorName) {
-        return this.stackNavigators.has(navigatorName) || this.tabNavigators.has(navigatorName)
+        return this.stackNavigators.has(navigatorName) || this.tabNavigators.has(navigatorName) || this.drawerNavigators.has(navigatorName)
     }
 }
 
