@@ -13,27 +13,20 @@ class ScreenTwo extends Component {
         title: 'ScreenTwo',
       }
     render() {
-        // this.props.NavigationStore.setNavigation('Main',this.props.navigation)
         return (
             <View style={Style.container}>
                 <View style={{flexDirection:'row'}}>
-                    <Button style={Style.button} onPress={()=>{                        
-                        //console.log(this.props.NavigationStore.CurrentRoute)                         
-                        //console.log(this.props.NavigationStore.ActiveNavigator)                         
+                    <Button style={Style.button} onPress={()=>{                    
                         this.props.NavigationStore.navigate({ routeName: 'MainFirst' })}}>
                         <Text style={Style.buttonText}>Screen 1</Text>
                     </Button>
-                    <Button style={Style.button} onPress={()=>{                         
-                        //console.log(this.props.NavigationStore.CurrentRoute)                         
-                        //console.log(this.props.NavigationStore.ActiveNavigator)                         
+                    <Button style={Style.button} onPress={()=>{                      
                         this.props.NavigationStore.navigate({ routeName: 'MainThird' })}}>
                         <Text style={Style.buttonText}>Screen 3</Text>
                     </Button>
-                    <Button style={[Style.button,{backgroundColor:'#B4D2BA'}]} onPress={()=>{                         
-                        //console.log(this.props.NavigationStore.CurrentRoute)                         
-                        //console.log(this.props.NavigationStore.ActiveNavigator)                         
+                    <Button style={[Style.button,{backgroundColor:'#B4D2BA'}]} onPress={()=>{                                                
                         this.props.NavigationStore.navigate({ routeName: 'NestedNavigator' })}}>
-                        <Text>Screen 4</Text>
+                        <Text>Nested stack</Text>
                     </Button>
                 </View>
             </View>

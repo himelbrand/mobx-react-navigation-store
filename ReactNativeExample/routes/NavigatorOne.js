@@ -41,7 +41,6 @@ class NavigatorOne extends Component {
         this.props.NavigationStore.setActiveNavigator('NavOne')
     }
     render(){
-        //console.log(this.state.nowMounted)
         return (
             
             <NavOne

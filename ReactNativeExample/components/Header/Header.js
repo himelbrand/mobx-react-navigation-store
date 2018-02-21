@@ -17,8 +17,6 @@ class Header extends Component {
                 <View style={{flexDirection:'row',justifyContent: flag ? 'flex-start' : 'center'}}>
                 { flag ? 
                 <Button style={Style.button} onPress={() => {
-                    //console.log(NavigationStore.CurrentRoute)
-                    //console.log(NavigationStore.ActiveNavigator)
                     NavigationStore.goBack(true)
                 }}>
                     <Text style={Style.buttonText}>{'<'}back</Text>

@@ -49,12 +49,9 @@ class MainStack extends Component {
                 <Header />
                 <Main
                     ref={ref => {
-                        ////console.log(ref, this.props.NavigationStore.getNavigator('Main'))
-
                         if (ref && (!this.props.NavigationStore.getNavigator('Main').navigation || this.state.nowMounted)) {
                             this.setState({ nowMounted: false })
                             try {
-                                //console.log('set Main Nav')
                                 this.props.NavigationStore.setNavigation('Main', ref._navigation)
                             } catch (err) {
                                 console.log(err)

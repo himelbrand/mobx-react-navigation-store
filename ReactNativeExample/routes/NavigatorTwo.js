@@ -22,7 +22,6 @@ const NavTwo = TabNavigator(
         tabBarPosition: 'top',
         navigationOptions:{
             tabBarOnPress:(nav) => {
-                console.log('gdsgsgsgsdsgsgsgdg',nav,NavigationStore)
                 const navigator = NavigationStore.getNavigator('NavTwo')
                 navigator.setJumpIndexFunction(nav.jumpToIndex)
                 NavigationStore.navigate(nav.scene.route)

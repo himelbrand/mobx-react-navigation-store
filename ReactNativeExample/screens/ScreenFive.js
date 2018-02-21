@@ -17,15 +17,11 @@ class ScreenFive extends Component {
             <View style={Style.container}>
                 
                 <View style={{flexDirection:'row',justifyContent:'space-around'}}>
-                    <Button style={Style.button} onPress={()=>{
-                        //console.log(this.props.NavigationStore.CurrentRoute)                         
-                        //console.log(this.props.NavigationStore.ActiveNavigator)                         
+                    <Button style={Style.button} onPress={()=>{                        
                         this.props.NavigationStore.navigate({ routeName: 'NavOneFirst' })}}>
                         <Text style={Style.buttonText}>Screen 4</Text>
                     </Button>
-                    <Button style={[Style.button,{backgroundColor:'#D89352'}]} onPress={()=>{
-                        //console.log(this.props.NavigationStore.CurrentRoute)                         
-                        //console.log(this.props.NavigationStore.ActiveNavigator)                         
+                    <Button style={[Style.button,{backgroundColor:'#D89352'}]} onPress={()=>{                      
                         this.props.NavigationStore.navigate({ routeName: 'NestedNavigator' })}}>
                         <Text style={Style.buttonText}>Nested Tabs</Text>
                     </Button>

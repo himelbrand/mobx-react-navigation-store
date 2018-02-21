@@ -10,8 +10,6 @@ class Home extends Component {
         super(props)
     }
     render() {
-        //console.log(this.props)
-
         return (
             <View style={Style.container}>
                     <Text style={Style.text}
