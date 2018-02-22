@@ -41,6 +41,8 @@ npm install rn-navigation-store --save
 ```
 npm page - https://www.npmjs.com/package/rn-navigation-store
 
+old npm page - https://www.npmjs.com/package/mobx-react-navigation-store
+
 This project depends on other project so if you're using any of the following packages:
 * mobx
 * mobx-persist
