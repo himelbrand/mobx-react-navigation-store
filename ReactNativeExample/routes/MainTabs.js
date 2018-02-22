@@ -12,7 +12,6 @@ import NavigationStore,{TabNavigator} from 'rn-navigation-store'
 import { Home, Second } from '../screens'
 import MainStack from './MainStack'
 import { Header, Footer } from '../components'
-//NavigationStore.setNavigator('MainTabs', 'Home', 'tab', { NestedNavigatorMain: 'Main' }, null, true, ['Home', 'Two', 'NestedNavigatorMain'])
 
 const Tabs = TabNavigator('MainTabs',
 {
@@ -41,8 +40,6 @@ class MainTabs extends Component {
 
     }
     componentDidMount() {
-        this.setState({ nowMounted: true })
-        this.props.NavigationStore.setActiveNavigator('MainTabs')
     }
     render() {
                 return (

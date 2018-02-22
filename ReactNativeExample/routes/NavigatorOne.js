@@ -12,7 +12,6 @@ import { ScreenFour, ScreenFive } from '../screens'
 import NavigatorTwo from './NavigatorTwo'
 import { StackNavigator } from 'rn-navigation-store'
 
-//NavigationStore.setNavigator('NavOne', 'NavOneFirst', 'stack', { NestedNavigator: 'NavTwo' }, 'Main')
 
 const NavOne = StackNavigator('NavOne',
     {
@@ -32,15 +31,12 @@ class NavigatorOne extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            nowMounted: false
         }
     }
     componentWillMount() {
 
     }
     componentDidMount() {
-        this.setState({ nowMounted: true })
-        this.props.NavigationStore.setActiveNavigator('NavOne')
     }
     render() {
         return (

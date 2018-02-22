@@ -11,7 +11,6 @@ import { create } from 'mobx-persist'
 import { ScreenSix, ScreenSeven } from '../screens'
 import NavigationStore from 'rn-navigation-store'
 import { TabNavigator } from 'rn-navigation-store'
-//NavigationStore.setNavigator('NavTwo', 'NavTwoFirst', 'tab', null, 'NavOne', true, ['NavTwoFirst', 'NavTwoSecond'])
 
 const NavTwo = TabNavigator('NavTwo',
     {
@@ -32,15 +31,11 @@ class NavigatorTwo extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            nowMounted: false
         }
     }
     componentWillMount() {
     }
     componentDidMount() {
-        this.setState({ nowMounted: true })
-
-        this.props.NavigationStore.setActiveNavigator('NavTwo')
     }
     render() {
         return (

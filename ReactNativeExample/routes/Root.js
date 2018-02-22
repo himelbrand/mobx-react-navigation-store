@@ -28,9 +28,7 @@ const Drawer = DrawerNavigator('MainDrawer',
         lazy: true,
     })
 let hydrated = false
-const result = hydrate('Nav', NavigationStore)
-const rehydrate = result.rehydrate
-result.then(() => {
+const result = hydrate('Nav', NavigationStore).then(() => {
     NavigationStore.setNavigators({
         MainDrawer: {
             type: 'drawer',
@@ -69,7 +67,6 @@ result.then(() => {
             initialNavigatorName: 'MainDrawer',
             order:['MainDrawer', 'MainTabs', 'Main', 'NavOne', 'NavTwo']
     })
-    !NavigationStore.ActiveNavigator && NavigationStore.setActiveNavigator('MainDrawer')
     setTimeout(() => NavigationStore.doneHydrating(), 1000)
     NavigationStore.StartedStoreHydration()
 }).catch(error => console.log(error))
@@ -81,17 +78,12 @@ class Root extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            nowMounted: false,
-            hydrated: false
         }
     }
     componentWillMount() {
-        this.setState({ nowMounted: true })
 
     }
     componentDidMount() {
-        if (NavigationStore.storeHydrated)
-            NavigationStore.setActiveNavigator('MainDrawer')
 
     }
     render() {

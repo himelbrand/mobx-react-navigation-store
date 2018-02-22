@@ -12,7 +12,6 @@ import NavigationStore, { StackNavigator } from 'rn-navigation-store'
 import { ScreenOne, ScreenTwo, ScreenThree } from '../screens'
 import NavigatorOne from './NavigatorOne'
 import { Header, Footer } from '../components'
-//NavigationStore.setNavigator('Main', 'MainFirst', 'stack', { NestedNavigator: 'NavOne' }, 'MainTabs')
 
 const Main = StackNavigator('Main',
     {
@@ -42,7 +41,6 @@ class MainStack extends Component {
     }
     componentDidMount() {
         this.setState({ nowMounted: true })
-        this.props.NavigationStore.setActiveNavigator('Main')
     }
     render() {
         return (

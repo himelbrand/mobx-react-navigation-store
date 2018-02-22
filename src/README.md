@@ -129,14 +129,9 @@ const hydrate = create({
                 initialNavigatorName: 'MainDrawer',//the initial navigator name, required
                 order:['MainDrawer', 'MainTabs', 'Main', 'NavOne', 'NavTwo']//order of nesting of navigators, required
             })
-            !NavigationStore.ActiveNavigator && NavigationStore.setActiveNavigator('MainDrawer')
             setTimeout(() => NavigationStore.doneHydrating(), 1000)
             NavigationStore.StartedStoreHydration()
         }).catch(error => console.log(error))
-    }
-    componentDidMount(){
-        if(NavigationStore.storeHydrated)
-            NavigationStore.setActiveNavigator('MainDrawer')
     }
 ```
 

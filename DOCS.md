@@ -27,19 +27,6 @@ const settings = {
 NavigationStore.setNavigators(navigators,settings) //this should happen in the .then of the hydrate function, as seen in the main readme.md
 ```
 
-
-### setActiveNavigator(navigatorName:string)
-
-used to set the current active navigator, recommended to use in inside componentDidMount inside the components that renders the navigators
-params:
-* navigatorName - default: none , description: the name of the navigator to set as active , required: yes
-
-```javascript
-componentDidMount(){
-    NavigationStore.setActiveNavigator('myNavigator')// if you injected NavigationStore use this.props.NavigationStore instead of NavigationStore
-}
-```
-
 ### goBack(needAction:boolean)
 
 used to go back on screen, even between nested navigators , also helps keep the correctness of the navigation state
