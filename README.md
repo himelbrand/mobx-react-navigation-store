@@ -146,6 +146,8 @@ const hydrate = create({
 right now in order to make a screen marked as a nested navigator you must give it a name including the string: 'NestedNavigator' 
 it can be anything including this string for example : 'NestedNavigator1' or 'NestedNavigator_Chat' or 'NestedNavigatorOne' etc.
 ```javascript
+import { StackNavigator } from 'mobx-react-navigation-store'
+
 const Main = StackNavigator(
     'Main',
     {
