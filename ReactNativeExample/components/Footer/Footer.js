@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
-import NavigationStore from 'mobx-react-navigation-store'
+import NavigationStore from 'rn-navigation-store'
 import {Button} from '..'
 class Footer extends Component {
     constructor(props) {

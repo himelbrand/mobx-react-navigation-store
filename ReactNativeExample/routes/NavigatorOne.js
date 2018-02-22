@@ -10,7 +10,7 @@ import { observer, inject } from 'mobx-react/native'
 import { create } from 'mobx-persist'
 import { ScreenFour, ScreenFive } from '../screens'
 import NavigatorTwo from './NavigatorTwo'
-import { StackNavigator } from 'mobx-react-navigation-store'
+import { StackNavigator } from 'rn-navigation-store'
 
 //NavigationStore.setNavigator('NavOne', 'NavOneFirst', 'stack', { NestedNavigator: 'NavTwo' }, 'Main')
 

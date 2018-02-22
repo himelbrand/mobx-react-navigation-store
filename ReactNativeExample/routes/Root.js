@@ -8,7 +8,7 @@ import {
 import { StackNavigator, NavigationActions, TabNavigator } from 'react-navigation'
 import { observer, Provider } from 'mobx-react/native'
 import { create } from 'mobx-persist'
-import NavigationStore, { DrawerNavigator } from 'mobx-react-navigation-store'
+import NavigationStore, { DrawerNavigator } from 'rn-navigation-store'
 import { DrawerHome, SplashScreen, DrawerTwo } from '../screens'
 import MainTabs from './MainTabs'
 import { Header, Footer, DrawerButton } from '../components'
