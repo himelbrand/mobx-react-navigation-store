@@ -1,7 +1,7 @@
 import { observable, action, computed } from 'mobx'
 import { persist } from 'mobx-persist'
 import { NavigationActions } from 'react-navigation'
-import {StackNavigator ,TabNavigator, DrawerNavigator} from './navigators'
+import { StackNavigator, TabNavigator, DrawerNavigator } from './navigators'
 
 
 class RoutePersist {
@@ -40,6 +40,7 @@ class NavigatorPersist {
         this.shouldPersist = flag
     }
 }
+
 class StackNavigatorPersist extends NavigatorPersist {
 
     @persist('list', RoutePersist) @observable currentStack = []
@@ -65,18 +66,18 @@ class DrawerNavigatorPersist extends NavigatorPersist {
         }
         this.currentRoute = new RoutePersist(route.routeName, route.params)
     }
-    open(){
-        if(this.navigation){
+    open() {
+        if (this.navigation) {
             this.navigation.navigate('DrawerOpen')
         }
     }
-    close(){
-        if(this.navigation){
+    close() {
+        if (this.navigation) {
             this.navigation.navigate('DrawerClose')
         }
     }
-    toggle(){
-        if(this.navigation){
+    toggle() {
+        if (this.navigation) {
             this.navigation.navigate('DrawerToggle')
         }
     }
@@ -123,20 +124,44 @@ class NavigationStore {
     @persist @observable activeNavigator = ''
     @persist @observable initialNavigator = ''
 
-    @action setNavigator(name, initRoute, type = 'stack', nested = null, parent = null, shouldPersist = true, routes = null) {
+    @action setNavigators(navigators, settings) {
+        const navigatorsEntries = Object.entries(navigators)
+        navigatorsEntries.forEach((entry) => {
+            this.setNavigator(entry[0], entry[1])
+        })
+        if (!settings || !settings.order || !settings.initialNavigatorName)
+            throw new Error('order and initialNavigatorName are required')
+        this.setOrder(settings.order)
+        this.setInitialNavigator(settings.initialNavigatorName)
+    }
+    @action setNavigator(name, settings) {
+        let { initRoute, type, nested, parent, shouldPersist, routes } = settings
+        if (!shouldPersist)
+            shouldPersist = true
+        if (!type)
+            type = 'stack'
+        if (!nested)
+            nested = null
+        if (!parent)
+            parent = null
+        if (shouldPersist === undefined || shouldPersist === null)
+            shouldPersist = true
+        if (!routes)
+            routes = null
         if (typeof initRoute === 'string' && initRoute.length > 0 && (!this.hasNavigator(name) || this.getNavigator(name).shouldPersist !== shouldPersist || this.getNavigator(name).initRoute !== initRoute || this.getNavigator(name).parent !== parent || JSON.stringify(this.getNavigator(name).nested) !== JSON.stringify(nested) || (type === 'tab' && (!this.getNavigator(name).routes || JSON.stringify(this.getNavigator(name).routes) !== JSON.stringify(routes))))) {
             if (type === 'stack')
                 this.stackNavigators.set(name, new StackNavigatorPersist(shouldPersist, initRoute, nested, parent, name))
             else if (type === 'tab')
                 this.tabNavigators.set(name, new TabNavigatorPersist(shouldPersist, initRoute, nested, parent, name, routes))
             else if (type === 'drawer')
-                this.drawerNavigators.set(name, new DrawerNavigatorPersist(shouldPersist, initRoute, nested, parent, name,false))
+                this.drawerNavigators.set(name, new DrawerNavigatorPersist(shouldPersist, initRoute, nested, parent, name, false))
 
             console.log(`new Navigator set: ${name}, if this is not a new navigator name, all of the stack info is now erased`)
-        } else if (this.hasNavigator(name)) {
-            console.log(`${name} is already set`)
-        } else if (!(typeof initRoute === 'string' && initRoute.length > 0))
+        }
+        else if (!(typeof initRoute === 'string' && initRoute.length > 0))
             throw new Error('invalid initial route given, must be string with length of at least 1')
+        else if (this.hasNavigator(name))
+            console.log(`${name} is already set`)
     }
     setNavigation(navigatorName, ref) {
         if (this.hasNavigator(navigatorName))
@@ -149,11 +174,10 @@ class NavigationStore {
         this.startedStoreHydration = true
     }
     @action setOrder(order) {
-        if(JSON.stringify(this.order) !== JSON.stringify(order))
+        if (JSON.stringify(this.order) !== JSON.stringify(order))
             this.order = order
     }
     @action setActiveNavigator(navigatorName) {
-        console.log('set active:', navigatorName)
         if (this.hasNavigator(navigatorName)) {
             this.activeNavigator = navigatorName
         } else
@@ -177,6 +201,8 @@ class NavigationStore {
                     let newNavName = navigator.nested[action.routeName]
                     this.setActiveNavigator(newNavName)
                     let newNav = this.getNavigator(this.activeNavigator)
+                    if (!newNav.currentRoute)
+                        newNav.currentRoute = new RoutePersist(newNav.initRoute)
                     while (newNav.currentRoute.routeName.includes('NestedNavigator')) {
                         newNavName = newNav.nested[newNav.currentRoute.routeName]
                         this.setActiveNavigator(newNavName)
@@ -194,15 +220,16 @@ class NavigationStore {
                         if (resetAction.routeName.includes('NestedNavigator')) {
                             const newNavName = navigator.nested[resetAction.routeName]
                             this.setActiveNavigator(newNavName)
+
                         }
                         if (resetAction.routeName !== 'DrawerOpen' && resetAction.routeName !== 'DrawerClose' && resetAction.routeName !== 'DrawerToggle')
                             navigator.setRoute({ routeName: resetAction.routeName, params: resetAction.params })
                     }
                 })
-            }else if(action.type === 'Navigation/COMPLETE_TRANSITION'){
-                
-            }else {
-                console.log(`unhandled navigation action: ${navigatorName}`,action)
+            } else if (action.type === 'Navigation/COMPLETE_TRANSITION') {
+
+            } else {
+                console.log(`unhandled navigation action: ${navigatorName}`, action)
             }
         } else {
             throw new Error(`no navigator with the given name: ${navigatorName}`)
@@ -218,10 +245,13 @@ class NavigationStore {
         if ((navigation && (currentRoute && (currentRoute.routeName !== route.routeName || (route.params && currentRoute.params !== route.params)))) || navigation) {
             navigation.dispatch(navigateAction)
         }
-        
+
     }
     @action goBack(needAction = false) {
+        if (this.activeNavigator === 'Main')
+            console.log(this.activeNavigator, this.getNavigatorStack('Main'))
         const navigator = this.getNavigator(this.activeNavigator)
+
         if (navigator instanceof StackNavigatorPersist || navigator instanceof DrawerNavigatorPersist) {
             if (navigator.currentStack.length > 0)
                 navigator.currentRoute = navigator.currentStack.pop()
@@ -240,12 +270,14 @@ class NavigationStore {
         const parent = this.getNavigator(parentName)
         const parentNav = parent.navigation
         if (needAction) {
-            if (parent instanceof StackNavigatorPersist || navigator instanceof DrawerNavigatorPersist)
+            if (parent instanceof StackNavigatorPersist || parent instanceof DrawerNavigatorPersist)
                 !parentNav.goBack() && parentNav.pop()
-            else if (parent instanceof TabNavigatorPersist)
-                parentNav.goBack()
+            else if (parent instanceof TabNavigatorPersist) {
+                parent.setRoute({ routeName: parent.routes[parent.tabIndex] }, parent.stackOfIndexes.pop(), false)
+
+            }
             while (parent.currentRoute && parent.currentRoute.routeName.includes('NestedNavigator')) {
-                if (parent instanceof StackNavigatorPersist || navigator instanceof DrawerNavigatorPersist)
+                if (parent instanceof StackNavigatorPersist || parent instanceof DrawerNavigatorPersist)
                     parent.currentRoute = parent.currentStack.pop()
                 else if (parent instanceof TabNavigatorPersist) {
                     parent.setRoute({ routeName: parent.routes[parent.tabIndex] }, parent.stackOfIndexes.pop(), false)
@@ -253,15 +285,18 @@ class NavigationStore {
                 }
             }
         }
-        else if ((parent instanceof StackNavigatorPersist || navigator instanceof DrawerNavigatorPersist) && parent.currentStack.length > 0) {
+        else if ((parent instanceof StackNavigatorPersist || parent instanceof DrawerNavigatorPersist) && parent.currentStack.length > 0) {
             parent.currentRoute = parent.currentStack.pop()
             while (parent.currentRoute.routeName.includes('NestedNavigator'))
                 parent.currentRoute = parent.currentStack.pop()
         }
         else if (parent instanceof TabNavigatorPersist && parent.stackOfIndexes.length > 0) {
+            console.log('doing back')
             parent.setRoute({ routeName: parent.routes[parent.tabIndex] }, parent.stackOfIndexes.pop(), false)
+
             while (parent.currentRoute.includes('NestedNavigator') && parent.stackOfIndexes.length > 0) {
                 parent.setRoute({ routeName: parent.routes[parent.tabIndex] }, parent.stackOfIndexes.pop(), false)
+
             }
         }
         this.setActiveNavigator(parentName)
@@ -342,9 +377,9 @@ class NavigationStore {
                     navigator.currentRoute = new RoutePersist(navigator.initRoute)
                 }
             } else if (navigator.shouldPersist && navigator instanceof DrawerNavigatorPersist) {
-                actions = navigator.currentStack.map((route) => ({routeName:route.routeName,params:route.params}))
+                actions = navigator.currentStack.map((route) => ({ routeName: route.routeName, params: route.params }))
                 if (navigator.currentRoute)
-                    actions.push({routeName:navigator.currentRoute.routeName,params:navigator.currentRoute.params})
+                    actions.push({ routeName: navigator.currentRoute.routeName, params: navigator.currentRoute.params })
             } else if (navigator instanceof DrawerNavigatorPersist) {
                 navigator.currentStack.clear()
                 actions.push({ routeName: navigator.initRoute })
@@ -356,10 +391,10 @@ class NavigationStore {
                 })
                 navigator.currentRoute = null
                 navigator.navigation.dispatch(resetAction)
-            }else  if (ready && navigator.navigation && actions.length >= 1 && navigator instanceof DrawerNavigatorPersist) {
+            } else if (ready && navigator.navigation && actions.length >= 1 && navigator instanceof DrawerNavigatorPersist) {
                 navigator.currentRoute = null
-                actions.forEach((route)=>navigator.navigation.navigate(route))
-            }else if ((navigator instanceof StackNavigatorPersist || navigator instanceof DrawerNavigatorPersist) && (!navigator.currentRoute || !ready)) {
+                actions.forEach((route) => navigator.navigation.navigate(route))
+            } else if ((navigator instanceof StackNavigatorPersist || navigator instanceof DrawerNavigatorPersist) && (!navigator.currentRoute || !ready)) {
                 navigator.currentRoute = new RoutePersist(navigator.initRoute)
             }
         })
@@ -398,11 +433,11 @@ class NavigationStore {
         return ans
     }
     getNavigator(navigatorName) {
-        let ans = this.stackNavigators.get(navigatorName)
+        let ans = this.stackNavigators.has(navigatorName) && this.stackNavigators.get(navigatorName)
         if (!ans)
-            ans = this.tabNavigators.get(navigatorName)
+            ans = this.tabNavigators.has(navigatorName) && this.tabNavigators.get(navigatorName)
         if (!ans)
-            ans = this.drawerNavigators.get(navigatorName)
+            ans = this.drawerNavigators.has(navigatorName) && this.drawerNavigators.get(navigatorName)
         return ans
     }
     hasNavigator(navigatorName) {

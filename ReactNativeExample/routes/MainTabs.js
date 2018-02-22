@@ -12,8 +12,10 @@ import NavigationStore,{TabNavigator} from 'mobx-react-navigation-store'
 import { Home, Second } from '../screens'
 import MainStack from './MainStack'
 import { Header, Footer } from '../components'
+//NavigationStore.setNavigator('MainTabs', 'Home', 'tab', { NestedNavigatorMain: 'Main' }, null, true, ['Home', 'Two', 'NestedNavigatorMain'])
 
-const Tabs = TabNavigator('MainTabs',{
+const Tabs = TabNavigator('MainTabs',
+{
     Home: { screen: Home },
     Two: { screen: Second },
     NestedNavigatorMain: { 
@@ -24,14 +26,6 @@ const Tabs = TabNavigator('MainTabs',{
         lazy: true,
         lazyLoad: true,
         backBehavior:'none',
-        // navigationOptions:{
-        //     tabBarOnPress:(nav) => {
-        //         const navigator = NavigationStore.getNavigator('MainTabs')
-        //         NavigationStore.setActiveNavigator('MainTabs')
-        //         navigator.setJumpIndexFunction(nav.jumpToIndex)
-        //         NavigationStore.navigate(nav.scene.route)
-        //     }
-        // }
     })
 
 @inject('NavigationStore')
@@ -53,26 +47,7 @@ class MainTabs extends Component {
     render() {
                 return (
             <View style={{flex:1}}>
-                <Tabs
-                    // ref={ref => {
-                    //     if (ref && (!this.props.NavigationStore.getNavigator('MainTabs').navigation || this.state.nowMounted)) {
-                    //         this.setState({ nowMounted: false })
-                    //         try {
-                    //             this.props.NavigationStore.setNavigation('MainTabs', ref._navigation)
-                    //         } catch (err) {
-                    //             console.log(err)
-                    //         }
-                    //     }
-                    // }}
-                    // onNavigationStateChange={(oldState, newState, action) => {
-                    //     try {
-                    //         this.props.NavigationStore.handleAction('MainTabs', oldState, newState, action)
-
-                    //     } catch (err) {
-                    //         console.log(err)
-                    //     }
-                    // }}
-                />
+                <Tabs/>
             </View>
 
         )

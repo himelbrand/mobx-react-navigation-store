@@ -10,12 +10,13 @@ import { observer, inject } from 'mobx-react/native'
 import { create } from 'mobx-persist'
 import { ScreenSix, ScreenSeven } from '../screens'
 import NavigationStore from 'mobx-react-navigation-store'
-import {TabNavigator} from 'mobx-react-navigation-store'
+import { TabNavigator } from 'mobx-react-navigation-store'
+//NavigationStore.setNavigator('NavTwo', 'NavTwoFirst', 'tab', null, 'NavOne', true, ['NavTwoFirst', 'NavTwoSecond'])
 
 const NavTwo = TabNavigator('NavTwo',
     {
-        NavTwoFirst: { screen: ScreenSix,title:'NavTwoFirst' },
-        NavTwoSecond: { screen: ScreenSeven ,title:'NavTwoSecond'},
+        NavTwoFirst: { screen: ScreenSix, title: 'NavTwoFirst' },
+        NavTwoSecond: { screen: ScreenSeven, title: 'NavTwoSecond' },
     }, {
         headerMode: 'none',
         lazy: true,
@@ -36,14 +37,14 @@ class NavigatorTwo extends Component {
     }
     componentWillMount() {
     }
-    componentDidMount(){
+    componentDidMount() {
         this.setState({ nowMounted: true })
 
         this.props.NavigationStore.setActiveNavigator('NavTwo')
     }
-    render(){
+    render() {
         return (
-                <NavTwo/>
+            <NavTwo />
         )
     }
 }

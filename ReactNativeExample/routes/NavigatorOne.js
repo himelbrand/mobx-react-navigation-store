@@ -10,16 +10,17 @@ import { observer, inject } from 'mobx-react/native'
 import { create } from 'mobx-persist'
 import { ScreenFour, ScreenFive } from '../screens'
 import NavigatorTwo from './NavigatorTwo'
-import {StackNavigator} from 'mobx-react-navigation-store'
+import { StackNavigator } from 'mobx-react-navigation-store'
 
+//NavigationStore.setNavigator('NavOne', 'NavOneFirst', 'stack', { NestedNavigator: 'NavTwo' }, 'Main')
 
 const NavOne = StackNavigator('NavOne',
     {
-        NavOneFirst: { screen: ScreenFour, title:'NavOneFirst' },
-        NavOneSecond: { screen: ScreenFive, title:'NavOneSecond' },
+        NavOneFirst: { screen: ScreenFour, title: 'NavOneFirst' },
+        NavOneSecond: { screen: ScreenFive, title: 'NavOneSecond' },
         NestedNavigator: { screen: NavigatorTwo },
     }, {
-       headerMode: 'none',
+        headerMode: 'none',
         lazy: true,
         initialRouteName: 'NavOneFirst',
     }
@@ -35,17 +36,17 @@ class NavigatorOne extends Component {
         }
     }
     componentWillMount() {
-       
+
     }
-    componentDidMount(){
+    componentDidMount() {
         this.setState({ nowMounted: true })
         this.props.NavigationStore.setActiveNavigator('NavOne')
     }
-    render(){
+    render() {
         return (
-            
-            <NavOne/>
-            
+
+            <NavOne />
+
         )
     }
 }

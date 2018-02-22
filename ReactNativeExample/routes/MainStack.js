@@ -5,13 +5,14 @@ import {
     AsyncStorage,
     Keyboard
 } from 'react-native';
-import {  NavigationActions, TabNavigator } from 'react-navigation'
+import { NavigationActions, TabNavigator } from 'react-navigation'
 import { observer, inject } from 'mobx-react/native'
 import { create } from 'mobx-persist'
-import NavigationStore,{StackNavigator} from 'mobx-react-navigation-store'
+import NavigationStore, { StackNavigator } from 'mobx-react-navigation-store'
 import { ScreenOne, ScreenTwo, ScreenThree } from '../screens'
 import NavigatorOne from './NavigatorOne'
 import { Header, Footer } from '../components'
+//NavigationStore.setNavigator('Main', 'MainFirst', 'stack', { NestedNavigator: 'NavOne' }, 'MainTabs')
 
 const Main = StackNavigator('Main',
     {
@@ -44,10 +45,10 @@ class MainStack extends Component {
         this.props.NavigationStore.setActiveNavigator('Main')
     }
     render() {
-                return (
+        return (
             <View style={{ flex: 1 }}>
                 <Header />
-                <Main/>
+                <Main />
                 <Footer />
             </View>
 

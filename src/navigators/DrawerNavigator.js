@@ -2,9 +2,10 @@
 import React, { Component }from 'react'
 import { DrawerNavigator, NavigationActions } from 'react-navigation'
 import { observer, inject } from 'mobx-react/native'
+import NavigationStore from '..'
 
 
-const create = (name, routeConfigs, drawerNavigatorConfig,refFunc, stateChangeFunc) => {
+const create = (name ,routeConfigs, drawerNavigatorConfig) => {
     const realNavigatorConfig = drawerNavigatorConfig
     if (!realNavigatorConfig.backBehavior)
         realNavigatorConfig.backBehavior = 'none'
@@ -12,10 +13,9 @@ const create = (name, routeConfigs, drawerNavigatorConfig,refFunc, stateChangeFu
         routeConfigs,
         realNavigatorConfig
     )
-    return props => <DrawerNav name={name} refFunc={refFunc} stateChangeFunc={stateChangeFunc} nav={navigator} {...props} />
+    return props => <DrawerNav name={name} nav={navigator} {...props} />
 }
 
-@inject('NavigationStore')
 @observer
 class DrawerNav extends Component {
     constructor(props) {
@@ -30,7 +30,7 @@ class DrawerNav extends Component {
     }
     componentDidMount() {
         this.setState({ nowMounted: true })
-        this.props.NavigationStore.setActiveNavigator(this.props.name)
+        NavigationStore.setActiveNavigator(this.props.name)
     }
     render() {
         const Navigator = this.props.nav
@@ -38,19 +38,19 @@ class DrawerNav extends Component {
         return (
             <Navigator
                 ref={ref => {
-                    if (ref && (!this.props.NavigationStore.getNavigator(name).navigation || this.state.nowMounted)) {
+                    if (ref && (!NavigationStore.getNavigator(name).navigation || this.state.nowMounted)) {
                         this.setState({ nowMounted: false })
                         try {
-                            this.props.NavigationStore.setNavigation(name, ref._navigation)
-                            this.props.refFunc && this.props.refFunc(ref)
+                            NavigationStore.setNavigation(name, ref._navigation)
+                            this.props.ref && this.props.ref(ref)
                         } catch (err) {
                             console.log(err)
                         }
                     }
                 }}
                 onNavigationStateChange={(oldState, newState, action) => {
-                    this.props.NavigationStore.handleAction(name, oldState, newState, action)
-                    this.props.stateChangeFunc && this.props.stateChangeFunc(oldState, newState, action)
+                    NavigationStore.handleAction(name, oldState, newState, action)
+                    this.props.onNavigationStateChange && this.props.onNavigationStateChange(oldState, newState, action)
                 }}
                 screenProps={this.props.screenProps}
             />
