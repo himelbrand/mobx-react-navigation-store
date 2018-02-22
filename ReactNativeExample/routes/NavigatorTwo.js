@@ -5,13 +5,14 @@ import {
     AsyncStorage,
     Keyboard
 } from 'react-native';
-import { TabNavigator, NavigationActions } from 'react-navigation'
+import { NavigationActions } from 'react-navigation'
 import { observer, inject } from 'mobx-react/native'
 import { create } from 'mobx-persist'
 import { ScreenSix, ScreenSeven } from '../screens'
 import NavigationStore from 'mobx-react-navigation-store'
+import {TabNavigator} from 'mobx-react-navigation-store'
 
-const NavTwo = TabNavigator(
+const NavTwo = TabNavigator('NavTwo',
     {
         NavTwoFirst: { screen: ScreenSix,title:'NavTwoFirst' },
         NavTwoSecond: { screen: ScreenSeven ,title:'NavTwoSecond'},
@@ -19,14 +20,7 @@ const NavTwo = TabNavigator(
         headerMode: 'none',
         lazy: true,
         initialRouteName: 'NavTwoFirst',
-        tabBarPosition: 'top',
-        navigationOptions:{
-            tabBarOnPress:(nav) => {
-                const navigator = NavigationStore.getNavigator('NavTwo')
-                navigator.setJumpIndexFunction(nav.jumpToIndex)
-                NavigationStore.navigate(nav.scene.route)
-            }
-        }
+        tabBarPosition: 'top'
 
     }
 )
@@ -49,18 +43,7 @@ class NavigatorTwo extends Component {
     }
     render(){
         return (
-                <NavTwo
-                ref={ref => {
-                    if(ref && ((this.props.NavigationStore.getNavigator('NavTwo') &&  !this.props.NavigationStore.getNavigator('NavTwo').navigation)|| this.state.nowMounted)){
-                        this.setState({nowMounted:false})
-                        this.props.NavigationStore.setNavigation('NavTwo',ref._navigation)
-                    }
-                }}
-                onNavigationStateChange={(oldState,newState,action) => {
-                    this.props.NavigationStore.handleAction('NavTwo',oldState, newState, action)
-                }}
-                
-                />
+                <NavTwo/>
         )
     }
 }

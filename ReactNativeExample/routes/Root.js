@@ -5,10 +5,10 @@ import {
     AsyncStorage,
     Keyboard
 } from 'react-native';
-import { StackNavigator, NavigationActions, TabNavigator,DrawerNavigator } from 'react-navigation'
+import { StackNavigator, NavigationActions, TabNavigator } from 'react-navigation'
 import { observer, Provider } from 'mobx-react/native'
 import { create } from 'mobx-persist'
-import NavigationStore from 'mobx-react-navigation-store'
+import NavigationStore, {DrawerNavigator} from 'mobx-react-navigation-store'
 import { DrawerHome, SplashScreen, DrawerTwo } from '../screens'
 import MainTabs from './MainTabs'
 import { Header, Footer, DrawerButton } from '../components'
@@ -16,7 +16,7 @@ const hydrate = create({
     storage: AsyncStorage,
 })
 const stores = { NavigationStore }
-const Drawer = DrawerNavigator({
+const Drawer = DrawerNavigator('MainDrawer',{
     Home: { screen: DrawerHome },
     Two: { screen: DrawerTwo },
     NestedNavigatorTabs: { 
@@ -68,28 +68,7 @@ class Root extends Component {
             <View style={{ flex: 1, justifyContent: 'space-around' }}>
                 {!splashDone ? <SplashScreen /> : <DrawerButton/> }
                 {NavigationStore.startedStoreHydration && <Provider {...stores}>
-                    <Drawer
-                        ref={ref => {
-                            if (ref && (!NavigationStore.getNavigator('MainDrawer').navigation || this.state.nowMounted)) {
-                                this.setState({ nowMounted: false })
-                                try {
-                                    console.log('set MainTabs Nav')
-                                    NavigationStore.setNavigation('MainDrawer', ref._navigation)
-                                } catch (err) {
-                                    console.log(err)
-                                }
-                            }
-                        }}
-                        onNavigationStateChange={(oldState, newState, action) => {
-                            try {
-                                NavigationStore.handleAction('MainDrawer', oldState, newState, action)
-
-                            } catch (err) {
-                                console.log(err)
-                            }
-                        }}
-                        screenProps={{}}
-                    />
+                    <Drawer/>
                 </Provider>}
 
             </View>

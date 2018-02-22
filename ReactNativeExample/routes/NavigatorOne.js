@@ -5,14 +5,15 @@ import {
     AsyncStorage,
     Keyboard
 } from 'react-native';
-import { StackNavigator, NavigationActions } from 'react-navigation'
+import { NavigationActions } from 'react-navigation'
 import { observer, inject } from 'mobx-react/native'
 import { create } from 'mobx-persist'
 import { ScreenFour, ScreenFive } from '../screens'
 import NavigatorTwo from './NavigatorTwo'
+import {StackNavigator} from 'mobx-react-navigation-store'
 
 
-const NavOne = StackNavigator(
+const NavOne = StackNavigator('NavOne',
     {
         NavOneFirst: { screen: ScreenFour, title:'NavOneFirst' },
         NavOneSecond: { screen: ScreenFive, title:'NavOneSecond' },
@@ -43,17 +44,7 @@ class NavigatorOne extends Component {
     render(){
         return (
             
-            <NavOne
-                ref={ref => {
-                    if(ref && ((this.props.NavigationStore.getNavigator('NavOne') && !this.props.NavigationStore.getNavigator('NavOne').navigation) || this.state.nowMounted)){
-                        this.setState({nowMounted:false})
-                        this.props.NavigationStore.setNavigation('NavOne',ref._navigation)
-                    }
-                }}
-                onNavigationStateChange={(oldState,newState,action) => {
-                    this.props.NavigationStore.handleAction('NavOne',oldState, newState, action)
-                }}
-                />
+            <NavOne/>
             
         )
     }

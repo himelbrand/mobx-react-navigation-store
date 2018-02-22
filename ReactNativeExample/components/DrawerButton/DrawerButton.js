@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, Image } from 'react-native'
 import { inject, observer } from 'mobx-react/native'
 import { Button } from '..'
 import NavigationStore from 'mobx-react-navigation-store'
@@ -14,11 +14,12 @@ class DrawerButton extends Component {
     render() {
         return (
             <View style={Style.container}>
-                
                 <Button style={Style.button} onPress={() => {
                     this.drwaerNav.toggle()
                 }}>
-                    <Text style={Style.buttonText}>Drawer</Text>
+                                <Image source={require('../../assets/burger.png')} style={{resizeMode:'contain',width:50,height:50,zIndex:2}} />
+
+                    {/* <Text style={Style.buttonText}>Drawer</Text> */}
                 </Button>
 
             </View>
@@ -33,7 +34,6 @@ const Style = StyleSheet.create({
     },
     container:{
         position:'absolute',
-
         top:30,
         right:10,
         zIndex:1
@@ -42,12 +42,8 @@ const Style = StyleSheet.create({
         height:60,
         width:60,
         borderRadius:30,
-        backgroundColor:'white',
         justifyContent:'center',
         alignItems:'center'
-
-
-
     },
     buttonText:{
         fontSize:15

@@ -5,24 +5,24 @@ import {
     AsyncStorage,
     Keyboard
 } from 'react-native';
-import { StackNavigator, NavigationActions, TabNavigator } from 'react-navigation'
+import {  NavigationActions, TabNavigator } from 'react-navigation'
 import { observer, inject } from 'mobx-react/native'
 import { create } from 'mobx-persist'
-import NavigationStore from 'mobx-react-navigation-store'
+import NavigationStore,{StackNavigator} from 'mobx-react-navigation-store'
 import { ScreenOne, ScreenTwo, ScreenThree } from '../screens'
 import NavigatorOne from './NavigatorOne'
 import { Header, Footer } from '../components'
 
-const Main = StackNavigator(
+const Main = StackNavigator('Main',
     {
         MainFirst: { screen: ScreenOne, title: 'MainFirst' },
         MainSecond: { screen: ScreenTwo, title: 'MainSecond' },
         MainThird: { screen: ScreenThree, title: 'MainThird' },
-        NestedNavigator: { screen: NavigatorOne },
+        NestedNavigator: { screen: NavigatorOne }
     }, {
         headerMode: 'none',
         lazy: true,
-        initialRouteName: 'MainFirst',
+        initialRouteName: 'MainFirst'
     }
 
 )
@@ -47,26 +47,7 @@ class MainStack extends Component {
                 return (
             <View style={{ flex: 1 }}>
                 <Header />
-                <Main
-                    ref={ref => {
-                        if (ref && (!this.props.NavigationStore.getNavigator('Main').navigation || this.state.nowMounted)) {
-                            this.setState({ nowMounted: false })
-                            try {
-                                this.props.NavigationStore.setNavigation('Main', ref._navigation)
-                            } catch (err) {
-                                console.log(err)
-                            }
-                        }
-                    }}
-                    onNavigationStateChange={(oldState, newState, action) => {
-                        try {
-                            this.props.NavigationStore.handleAction('Main', oldState, newState, action)
-
-                        } catch (err) {
-                            console.log(err)
-                        }
-                    }}
-                />
+                <Main/>
                 <Footer />
             </View>
 

@@ -1,6 +1,8 @@
-const { observable, action, computed } = require('mobx')
-const { persist } = require('mobx-persist')
-const { NavigationActions } = require('react-navigation')
+import { observable, action, computed } from 'mobx'
+import { persist } from 'mobx-persist'
+import { NavigationActions } from 'react-navigation'
+import {StackNavigator ,TabNavigator, DrawerNavigator} from './navigators'
+
 
 class RoutePersist {
     @persist @observable routeName = ''
@@ -197,8 +199,10 @@ class NavigationStore {
                             navigator.setRoute({ routeName: resetAction.routeName, params: resetAction.params })
                     }
                 })
-            } else {
-                console.log(`unhandled navigation action: ${action} ${navigatorName}`)
+            }else if(action.type === 'Navigation/COMPLETE_TRANSITION'){
+                
+            }else {
+                console.log(`unhandled navigation action: ${navigatorName}`,action)
             }
         } else {
             throw new Error(`no navigator with the given name: ${navigatorName}`)
@@ -408,4 +412,10 @@ class NavigationStore {
 
 const singelton = new NavigationStore()
 
-module.exports = singelton
+export default singelton
+
+export {
+    StackNavigator,
+    TabNavigator,
+    DrawerNavigator
+}
