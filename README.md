@@ -1,8 +1,5 @@
 ![text](https://preview.ibb.co/cidW5x/imageedit_3_3248511135.png)
 
-
-a simple solution for nested navigators in react native.
-
 ## Welcome
 
 This project is still under construction and will be improved further
