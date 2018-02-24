@@ -2,7 +2,10 @@
 
 ## Welcome
 
-This project is still under construction and will be improved further
+This project is simple solution for nested navigators in react native with optional navigation state presistence.
+you use it almost like you use react-navigation, with a few changes.
+
+
 if you want to contribute you can
 * see the Contributing section and then you can
     * open issues with ideas for improvments 
