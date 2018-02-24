@@ -1,5 +1,4 @@
-# React Native Navigation Store
-a simple solution for nested navigators in react native.
+![text](https://preview.ibb.co/cidW5x/imageedit_3_3248511135.png)
 
 ## Welcome
 
