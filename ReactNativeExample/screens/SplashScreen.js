@@ -4,71 +4,82 @@ import {
     Text,
     ImageBackground,
     Dimensions,
-    StyleSheet
+    StyleSheet, 
+    Animated,
+    Easing
 } from 'react-native';
 
 
 class SplashScreen extends Component {
-    constructor() {
-        super()
-        this.state = {
-            dots: '',
-        }
-        this.interval = null
-        this.dotCount = 0
-    }
-    componentWillMount() {
-        this.interval = setInterval(() => {
-            this.dotCount = (this.dotCount + 1) % 4
-            switch (this.dotCount) {
-                case 0:
-                    this.setState({dots: ''})
-                    break;
-                case 1:
-                    this.setState({dots: '.'})
-                    break;
-                case 2:
-                    this.setState({dots: '..'})
-                    break;
-                case 3:
-                    this.setState({dots: '...'})
-                    break;
-                default:
-                    break;
-            }
-        },250)
-    }
-    componentWillUnmount() {
-        clearInterval(this.interval)
-    }
+    constructor () {
+		super()
+		this.spinValue = new Animated.Value(0)
+	}
+	componentDidMount () {
+		this.spin()
+	}
+	spin () {
+		this.spinValue.setValue(0)
+		Animated.timing(
+			this.spinValue,
+			{
+				toValue: 1,
+				duration: 4000,
+				easing: Easing.linear
+			}
+		).start(() => this.spin())
+	}
+    
+   
     render() {
+        const spin = this.spinValue.interpolate({
+			inputRange: [0, 1],
+			outputRange: ['0deg', '360deg']
+		})
         return  (
-            <View style={Style.image_background}>
-                <View style={Style.container}>
-                    <Text style={Style.text}>
-                        Loading{this.state.dots}
-                    </Text>
-                </View>
-            </View>
+            <View style={styles.container}>
+				<Text style={styles.title}>
+          			React Native Navigation store
+				</Text>
+				<Animated.Image
+					style={[styles.logo,{transform: [{rotate: spin}] }]}
+					source={require('../assets/logo.png')}
+				/>
+			</View>
         ) 
     }
 }
-const Style = StyleSheet.create({
-    image_background: {
+const styles = StyleSheet.create({
+	container: {
         flex: 1,
-        minHeight: '100%',
-        minWidth: '100%',
-        backgroundColor:'#7180B9',
+        minWidth:'100%',
+        minHeight:'100%',
+		flexDirection:'column',
+        //justifyContent: 'space-around',
+        paddingTop:100,
+		alignItems: 'center',
+		flexWrap:'nowrap',
+        backgroundColor: '#1a85ff',
         zIndex:200
-    },
-    container: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center"
-    },
-    text: {
-        fontSize: 40,
-        color:'white'
-    }
+	},
+	title: {
+		fontSize: 40,
+		fontWeight: 'bold',
+		textAlign: 'center',
+        marginTop: 25,
+        marginBottom:100,
+		color: 'white'
+	},
+	bottomTitle:{
+		margin:35,
+		fontSize: 15,
+		textAlign: 'center',
+		color: '#b3d6ff'
+	},
+	logo:{
+        resizeMode:'contain',
+		width: 250,
+		height: 250
+	}
 })
 export default SplashScreen;

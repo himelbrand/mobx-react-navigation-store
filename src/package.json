@@ -1,6 +1,6 @@
 {
-  "name": "rn-navigation-store",
-  "version": "1.0.2",
+  "name": "mobx-react-navigation-store",
+  "version": "1.0.0",
   "description": "a simple solution for nested navigators in react native.",
   "main": "index.js",
   "scripts": {
