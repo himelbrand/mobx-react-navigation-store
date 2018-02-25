@@ -1,14 +1,19 @@
-# React Native Navigation Store
-a simple solution for nested navigators in react native.
+![text](https://preview.ibb.co/cidW5x/imageedit_3_3248511135.png)
 
 ## Welcome
 
-This project is still under construction and will be improved further
+This project is simple solution for nested navigators in react native with optional navigation state presistence.
+
+you use it almost like you use react-navigation, with a few changes.
+
+
 if you want to contribute you can
 * see the Contributing section and then you can
     * open issues with ideas for improvments 
     * help with documantion 
-    * PRs
+    * forks and PRs are most welcome
+
+the latest version of this package is currently version: 1.0.3
 
 of course you don't have to contribute to enjoy this package, so enjoy!
 
@@ -28,7 +33,6 @@ enjoy!
     * navigation actions support still missing : replace, push, pop, popToTop
 * drawer navigators - has support
 * tab navigators - has support
-    * no lazy load - WIP
 
 ## Installation
 
@@ -40,6 +44,8 @@ or with npm
 npm install rn-navigation-store --save
 ```
 npm page - https://www.npmjs.com/package/rn-navigation-store
+
+old npm page - https://www.npmjs.com/package/mobx-react-navigation-store
 
 This project depends on other project so if you're using any of the following packages:
 * mobx

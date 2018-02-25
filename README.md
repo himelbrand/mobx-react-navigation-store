@@ -11,7 +11,9 @@ if you want to contribute you can
 * see the Contributing section and then you can
     * open issues with ideas for improvments 
     * help with documantion 
-    * PRs
+    * forks and PRs are most welcome
+
+the latest version of this package is currently version: 1.0.3
 
 of course you don't have to contribute to enjoy this package, so enjoy!
 
@@ -31,7 +33,6 @@ enjoy!
     * navigation actions support still missing : replace, push, pop, popToTop
 * drawer navigators - has support
 * tab navigators - has support
-    * no lazy load - WIP
 
 ## Installation
 
