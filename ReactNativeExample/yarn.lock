@@ -4010,9 +4010,9 @@ rimraf@~2.2.6:
   version "2.2.8"
   resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-2.2.8.tgz#e439be2aaee327321952730f99a8929e4fc50582"
 
-rn-navigation-store@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/rn-navigation-store/-/rn-navigation-store-1.0.1.tgz#c64841444fd69927abdaa8ccaee489250fbbe044"
+rn-navigation-store@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/rn-navigation-store/-/rn-navigation-store-1.0.4.tgz#ec62840071c9dcc8c727dfc9988b02c0e5bed4c1"
   dependencies:
     mobx "^3.4.1"
     mobx-persist "^0.4.1"
