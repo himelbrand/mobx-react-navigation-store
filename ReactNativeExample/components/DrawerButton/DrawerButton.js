@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { View, Text, StyleSheet, Image } from 'react-native'
 import { inject, observer } from 'mobx-react/native'
 import { Button } from '..'
-import NavigationStore from 'rn-navigation-store'
+import NavigationStore from 'mobx-react-navigation-store'
 
 @observer
 class DrawerButton extends Component {

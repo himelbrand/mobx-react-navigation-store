@@ -9,8 +9,7 @@ import { NavigationActions } from 'react-navigation'
 import { observer, inject } from 'mobx-react/native'
 import { create } from 'mobx-persist'
 import { ScreenSix, ScreenSeven } from '../screens'
-import NavigationStore from 'rn-navigation-store'
-import { TabNavigator } from 'rn-navigation-store'
+import NavigationStore,{ TabNavigator } from 'mobx-react-navigation-store'
 
 const NavTwo = TabNavigator('NavTwo',
     {

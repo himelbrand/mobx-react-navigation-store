@@ -1,6 +1,6 @@
 {
-  "name": "rn-navigation-store",
-  "version": "1.0.4",
+  "name": "mobx-react-navigation-store",
+  "version": "1.0.5",
   "description": "a simple solution for nested navigators in react native.",
   "main": "index.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/himelbrand/RN-navigation-store.git"
+    "url": "git+https://github.com/himelbrand/mobx-react-navigation-store.git"
   },
   "keywords": [
     "react-native",

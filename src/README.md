@@ -24,7 +24,7 @@ after many times implementing an app specific navigation store using mobx, so th
 
 ## Working example
 you can check out the very simple react native example app
-just click [here](https://github.com/himelbrand/rn-navigation-store/tree/master/ReactNativeExample) and follow the instructions
+just click [here](https://github.com/himelbrand/mobx-react-navigation-store/tree/master/ReactNativeExample) and follow the instructions
 enjoy!
 
 ## What's ready?
@@ -37,15 +37,14 @@ enjoy!
 ## Installation
 
 ```bash
-yarn add rn-navigation-store
+yarn add mobx-react-navigation-store
 ```
 or with npm 
 ```bash
-npm install rn-navigation-store --save
+npm install mobx-react-navigation-store --save
 ```
-npm page - https://www.npmjs.com/package/rn-navigation-store
+npm page - https://www.npmjs.com/package/mobx-react-navigation-store
 
-old npm page - https://www.npmjs.com/package/mobx-react-navigation-store
 
 This project depends on other project so if you're using any of the following packages:
 * mobx
@@ -53,7 +52,7 @@ This project depends on other project so if you're using any of the following pa
 * mobx-react
 * react-navigation
 
-Note that this packages are installed automatically when installing rn-navigation-store with the following versions:
+Note that this packages are installed automatically when installing mobx-react-navigation-store with the following versions:
 
 * "mobx": "^3.4.1",
 * "mobx-persist": "^0.4.1",
@@ -65,20 +64,20 @@ Note that this packages are installed automatically when installing rn-navigatio
 Note that more info on the specific methods and fields will be added later in another section 
 this is just general usage instructions
 
-to see full docs [press here](https://github.com/himelbrand/rn-navigation-store/blob/master/DOCS.md)
+to see full docs [press here](https://github.com/himelbrand/mobx-react-navigation-store/blob/master/DOCS.md)
 
 ### import
 
 this package exports a singelton so every where you import will have the same data inside
 ```javascript
-import NavigationStore from 'rn-navigation-store'
+import NavigationStore from 'mobx-react-navigation-store'
 ```
 
 to import navigators , you should use these insted of the ones in 'react-navigation'
 these navigators wrap the react-navigation navigators to work with the store
 
 ```javascript
-import { DrawerNavigator, StackNavigator, TabNavigator  } from 'rn-navigation-store'
+import { DrawerNavigator, StackNavigator, TabNavigator  } from 'mobx-react-navigation-store'
 ```
 
 ### hydrate store and set navigators
@@ -146,7 +145,7 @@ const hydrate = create({
 right now in order to make a screen marked as a nested navigator you must give it a name including the string: 'NestedNavigator' 
 it can be anything including this string for example : 'NestedNavigator1' or 'NestedNavigator_Chat' or 'NestedNavigatorOne' etc.
 ```javascript
-import { StackNavigator } from 'rn-navigation-store'
+import { StackNavigator } from 'mobx-react-navigation-store'
 
 const Main = StackNavigator(
     'Main',
@@ -189,7 +188,7 @@ notice that in order to react to changes in observables you need the component g
 
 ## Contributing
 
-Please read [CONTRIBUTING.md](https://github.com/himelbrand/rn-navigation-store/blob/master/CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
+Please read [CONTRIBUTING.md](https://github.com/himelbrand/mobx-react-navigation-store/blob/master/CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
 
 ## Versioning
 

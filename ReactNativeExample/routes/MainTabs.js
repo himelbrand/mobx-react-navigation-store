@@ -8,7 +8,7 @@ import {
 import { StackNavigator, NavigationActions } from 'react-navigation'
 import { observer, inject } from 'mobx-react/native'
 import { create } from 'mobx-persist'
-import NavigationStore,{TabNavigator} from 'rn-navigation-store'
+import NavigationStore,{TabNavigator} from 'mobx-react-navigation-store'
 import { Home, Second } from '../screens'
 import MainStack from './MainStack'
 import { Header, Footer } from '../components'
