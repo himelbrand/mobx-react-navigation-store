@@ -195,7 +195,7 @@ class NavigationStore {
         if (this.hasNavigator(navigatorName)) {
             const navigator = this.getNavigator(navigatorName)
             if (action.type === 'Navigation/BACK') {
-                this.goBack(false)
+                this.backParent(navigatorName, false)
             } else if (action.type === 'Navigation/NAVIGATE') {
                 if (action.routeName.includes('NestedNavigator')) {
                     let newNavName = navigator.nested[action.routeName]
@@ -226,6 +226,8 @@ class NavigationStore {
                             navigator.setRoute({ routeName: resetAction.routeName, params: resetAction.params })
                     }
                 })
+            } else if (action.type === 'Navigation/POP') {
+                //this.goBack(false)
             } else if (action.type === 'Navigation/COMPLETE_TRANSITION') {
 
             } else {
@@ -253,10 +255,10 @@ class NavigationStore {
         const navigator = this.getNavigator(this.activeNavigator)
 
         if (navigator instanceof StackNavigatorPersist || navigator instanceof DrawerNavigatorPersist) {
-            if (navigator.currentStack.length > 0){
-                this.backParent(this.activeNavigator,needAction)
+            if (navigator.currentStack.length > 0) {
+                this.backParent(this.activeNavigator, needAction)
                 navigator.currentRoute = navigator.currentStack.pop()
-            }else if (navigator.parent && navigator.currentStack.length === 0) {
+            } else if (navigator.parent && navigator.currentStack.length === 0) {
                 this.backParent(navigator.parent, needAction)
             }
         } else if (navigator instanceof TabNavigatorPersist) {
