@@ -136,7 +136,7 @@ class NavigationStore {
     }
     @action setNavigator(name, settings) {
         let { initRoute, type, nested, parent, shouldPersist, routes } = settings
-        if (!shouldPersist)
+        if (shouldPersist !== false)
             shouldPersist = true
         if (!type)
             type = 'stack'
@@ -253,9 +253,10 @@ class NavigationStore {
         const navigator = this.getNavigator(this.activeNavigator)
 
         if (navigator instanceof StackNavigatorPersist || navigator instanceof DrawerNavigatorPersist) {
-            if (navigator.currentStack.length > 0)
+            if (navigator.currentStack.length > 0){
+                this.backParent(this.activeNavigator,needAction)
                 navigator.currentRoute = navigator.currentStack.pop()
-            else if (navigator.parent && navigator.currentStack.length === 0) {
+            }else if (navigator.parent && navigator.currentStack.length === 0) {
                 this.backParent(navigator.parent, needAction)
             }
         } else if (navigator instanceof TabNavigatorPersist) {
