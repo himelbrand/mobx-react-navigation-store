@@ -311,7 +311,7 @@ class NavigationStore {
             index: index,
             actions: actions
         })
-        const activeNavigator = this.navigators.get(this.activeNavigator)
+        const activeNavigator = this.getNavigator(this.activeNavigator)
         const navigation = activeNavigator.navigation
         if (navigation)
             navigation.dispatch(resetAction)
