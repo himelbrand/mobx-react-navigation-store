@@ -313,8 +313,10 @@ class NavigationStore {
         })
         const activeNavigator = this.getNavigator(this.activeNavigator)
         const navigation = activeNavigator.navigation
-        if (navigation)
+        if (navigation){
+            activeNavigator instanceof StackNavigatorPersist || activeNavigator instanceof DrawerNavigatorPersist ? activeNavigator.currentStack.clear() : activeNavigator.stackOfIndexes.clear()
             navigation.dispatch(resetAction)
+        }
     }
     @action logout() {
         const names = this.NavigatorsNames
