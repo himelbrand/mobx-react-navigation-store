@@ -322,8 +322,6 @@ class NavigationStore {
         const names = this.order.reverse()
         const navigators = names.map(name => this.getNavigator(name))
         navigators.forEach(navigator => {
-            console.log(navigator)
-            console.log(navigator.initRoute)
             const resetAction = navigator instanceof StackNavigatorPersist ?
                 NavigationActions.reset({
                     index: 0,
@@ -342,11 +340,11 @@ class NavigationStore {
                 navigator.navigation.dispatch(resetAction)
             } 
             setTimeout(() => {
-                if (!navigator.nested)
+                if (!navigator.nested && navigator.name !== this.initialNavigator)
                     navigator.navigation = null
             }, 1000)
         })
-        setTimeout(()=>this.setActiveNavigator(this.initialNavigator),100)
+        setTimeout(()=>this.setActiveNavigator(this.initialNavigator),250)
     }
     @action doneHydrating(ready = true, delay = 1500, reset = {}) {
         const stackNavigatorsNames = this.order
