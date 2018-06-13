@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import { TabNavigator, NavigationActions } from 'react-navigation'
 import { observer, inject } from 'mobx-react/native'
 import NavigationStore from '..'
+import { AppState } from 'react-native'
 
 
 const create = (name, routeConfigs, tabNavigatorConfig) => {
@@ -51,11 +52,17 @@ class TabNav extends Component {
 
     }
     componentWillMount() {
-
+        AppState.removeEventListener('change', this._handleAppStateChange)
     }
     componentDidMount() {
         this.setState({ nowMounted: true })
         NavigationStore.setActiveNavigator(this.props.name)
+        AppState.addEventListener('change', this._handleAppStateChange)
+    }
+    _handleAppStateChange = (nextAppState) => {
+        if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
+            this.setState({ nowMounted: true })
+        }
     }
     render() {
         const Navigator = this.props.nav
