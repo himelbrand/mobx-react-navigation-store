@@ -245,7 +245,11 @@ class NavigationStore {
         const navigation = activeNavigator && activeNavigator.navigation
         const currentRoute = activeNavigator && activeNavigator.currentRoute
         if ((navigation && (currentRoute && (currentRoute.routeName !== route.routeName || (route.params && currentRoute.params !== route.params)))) || navigation) {
-            navigation.dispatch(navigateAction)
+            try{
+                navigation.dispatch(navigateAction)
+            }catch(error){
+                console.log('react-navigation error:',error)
+            }
         }
 
     }
@@ -315,7 +319,11 @@ class NavigationStore {
         const navigation = activeNavigator.navigation
         if (navigation) {
             activeNavigator instanceof StackNavigatorPersist || activeNavigator instanceof DrawerNavigatorPersist ? activeNavigator.currentStack.clear() : activeNavigator.stackOfIndexes.clear()
-            navigation.dispatch(resetAction)
+            try{
+                navigation.dispatch(resetAction)
+            }catch(error){
+                console.log('react-navigation error:',error)
+            }
         }
     }
     @action logout() {
@@ -337,7 +345,11 @@ class NavigationStore {
 
 
             if(navigator.navigation){
-                navigator.navigation.dispatch(resetAction)
+                try{
+                    navigator.navigation.dispatch(resetAction)
+                }catch(error){
+                    console.log('react-navigation error:',error)
+                }
             } 
             setTimeout(() => {
                 if (!navigator.nested && navigator.name !== this.initialNavigator)
@@ -381,7 +393,11 @@ class NavigationStore {
 
                 if (ready && navigator.navigation) {
                     navigator.currentRoute = null
-                    navigator.navigation.dispatch(action)
+                    try{
+                        navigator.navigation.dispatch(action)
+                    }catch(error){
+                        console.log('react-navigation error:',error)
+                    }
                 } else {
                     navigator.currentRoute = new RoutePersist(navigator.initRoute)
                 }
@@ -416,7 +432,11 @@ class NavigationStore {
                     actions: resetFlag ? [NavigationActions.navigate({ routeName: lastRoute.routeName, params: lastRoute.params })] : actions
                 })
                 navigator.currentRoute = null
-                navigator.navigation.dispatch(resetAction)
+                try{
+                    navigator.navigation.dispatch(resetAction)
+                }catch(error){
+                    console.log('react-navigation error:',error)
+                }
             } else if (ready && navigator.navigation && actions.length >= 1 && navigator instanceof DrawerNavigatorPersist) {
                 navigator.currentRoute = null
                 actions.forEach((route) => navigator.navigation.navigate(route))
