@@ -31,7 +31,7 @@ class StackNav extends Component {
         AppState.addEventListener('change', this._handleAppStateChange)
     }
     _handleAppStateChange = (nextAppState) => {
-        if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
+        if (this.state.appState && this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
             this.setState({ nowMounted: true })
         }
     }
