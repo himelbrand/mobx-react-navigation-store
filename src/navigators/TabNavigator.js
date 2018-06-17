@@ -47,7 +47,8 @@ class TabNav extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            nowMounted: false
+            nowMounted: false,
+            appState: AppState.currentState
         }
 
     }
@@ -61,7 +62,7 @@ class TabNav extends Component {
     }
     _handleAppStateChange = (nextAppState) => {
         if (this.state.appState && this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
-            this.setState({ nowMounted: true })
+            this.setState({ nowMounted: true,appState: nextAppState})
         }
     }
     render() {
