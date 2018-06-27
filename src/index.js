@@ -128,7 +128,7 @@ class NavigationStore {
             () => this.CurrentRoute,
             route => {
                 if (route.includes('NestedNavigator')) {
-                    navigator = this.getNavigator(this.activeNavigator)
+                    let navigator = this.getNavigator(this.activeNavigator)
                     let newNavName = navigator.nested[route]
                     this.setActiveNavigator(newNavName)
                     let newNav = this.getNavigator(this.activeNavigator)
