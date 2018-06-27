@@ -27,7 +27,7 @@ class DrawerNav extends Component {
         }
 
     }
-    componentWillMount() {
+    componentWillUnmount() {
         AppState.removeEventListener('change', this._handleAppStateChange)
     }
     componentDidMount() {

@@ -23,8 +23,9 @@ class StackNav extends Component {
         }
 
     }
-    componentWillMount() {
+    componentWillUnmount() {
         AppState.removeEventListener('change', this._handleAppStateChange)
+        this.setState({ nowMounted: false })
     }
     componentDidMount() {
         this.setState({ nowMounted: true })

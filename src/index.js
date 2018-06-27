@@ -1,4 +1,4 @@
-import { observable, action, computed } from 'mobx'
+import { observable, action, computed,reaction } from 'mobx'
 import { persist } from 'mobx-persist'
 import { NavigationActions } from 'react-navigation'
 import { StackNavigator, TabNavigator, DrawerNavigator } from './navigators'
@@ -123,7 +123,21 @@ class NavigationStore {
     @persist('list') @observable order = []
     @persist @observable activeNavigator = ''
     @persist @observable initialNavigator = ''
-
+    constructor(){
+        const goDeepNested = reaction(
+            () => this.CurrentRoute,
+            route => {
+                if (route.includes('NestedNavigator')) {
+                    navigator = this.getNavigator(this.activeNavigator)
+                    let newNavName = navigator.nested[route]
+                    this.setActiveNavigator(newNavName)
+                    let newNav = this.getNavigator(this.activeNavigator)
+                    if (!newNav.currentRoute)
+                        newNav.currentRoute = new RoutePersist(newNav.initRoute)
+                }
+            }
+        )
+    }
     @action setNavigators(navigators, settings) {
         const navigatorsEntries = Object.entries(navigators)
         navigatorsEntries.forEach((entry) => {
@@ -148,7 +162,7 @@ class NavigationStore {
             shouldPersist = true
         if (!routes)
             routes = null
-        if (typeof initRoute === 'string' && initRoute.length > 0 && (!this.hasNavigator(name) || this.getNavigator(name).shouldPersist !== shouldPersist || this.getNavigator(name).initRoute !== initRoute || this.getNavigator(name).parent !== parent || JSON.stringify(this.getNavigator(name).nested) !== JSON.stringify(nested) || (type === 'tab' && (!this.getNavigator(name).routes || JSON.stringify(this.getNavigator(name).routes) !== JSON.stringify(routes))))) {
+        if (typeof initRoute === 'string' && initRoute.length > 0 && (!this.hasNavigator(name) || this.getNavigator(name).parent !== parent || JSON.stringify(this.getNavigator(name).nested) !== JSON.stringify(nested) || (type === 'tab' && (!this.getNavigator(name).routes || JSON.stringify(this.getNavigator(name).routes) !== JSON.stringify(routes))))) {
             if (type === 'stack')
                 this.stackNavigators.set(name, new StackNavigatorPersist(shouldPersist, initRoute, nested, parent, name))
             else if (type === 'tab')
@@ -157,6 +171,9 @@ class NavigationStore {
                 this.drawerNavigators.set(name, new DrawerNavigatorPersist(shouldPersist, initRoute, nested, parent, name, false))
 
             console.log(`new Navigator set: ${name}, if this is not a new navigator name, all of the stack info is now erased`)
+        }else if (typeof initRoute === 'string' && initRoute.length > 0 &&this.hasNavigator(name) && (this.getNavigator(name).shouldPersist !== shouldPersist || this.getNavigator(name).initRoute !== initRoute)){
+            this.getNavigator(name).setInitRoute(initRoute)
+            this.getNavigator(name).setShouldPersist(shouldPersist)
         }
         else if (!(typeof initRoute === 'string' && initRoute.length > 0))
             throw new Error('invalid initial route given, must be string with length of at least 1')
@@ -190,6 +207,7 @@ class NavigationStore {
             throw new Error('no navigator with the given name')
     }
     @action handleAction(navigatorName, oldState, newState, action) {
+        console.log(action)
         if (!action || !navigatorName)
             throw new Error('invalid params')
         if (this.hasNavigator(navigatorName)) {

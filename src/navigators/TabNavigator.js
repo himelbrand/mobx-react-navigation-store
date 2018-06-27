@@ -52,7 +52,7 @@ class TabNav extends Component {
         }
 
     }
-    componentWillMount() {
+    componentWillUnmount() {
         AppState.removeEventListener('change', this._handleAppStateChange)
     }
     componentDidMount() {
