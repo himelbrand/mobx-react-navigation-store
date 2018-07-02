@@ -13,7 +13,7 @@ if you want to contribute you can
     * help with documantion 
     * forks and PRs are most welcome
 
-the latest version of this package is currently version: 1.4.1
+the latest version of this package is currently version: 1.4.2
 
 
 **IMPORTANT - THE DOCS ARE NOT UP TO DATE...**
