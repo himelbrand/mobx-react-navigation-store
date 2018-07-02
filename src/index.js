@@ -149,7 +149,8 @@ class NavigationStore {
         this.setOrder(settings.order)
         this.setInitialNavigator(settings.initialNavigatorName)
     }
-    @action setNavigator(name, settings) {
+    @action setNavigator(name, settings, debug = false) {
+        this.debug = debug
         let { initRoute, type, nested, parent, shouldPersist, routes } = settings
         if (shouldPersist !== false)
             shouldPersist = true
@@ -381,9 +382,8 @@ class NavigationStore {
         })
         setTimeout(() => this.setActiveNavigator(this.initialNavigator), 250)
     }
-    @action doneHydrating(ready = true, delay = 1500, reset = {}, debug = false) {
+    @action doneHydrating(ready = true, delay = 1500, reset = {}) {
         const stackNavigatorsNames = this.order
-        this.debug = debug
         stackNavigatorsNames.forEach((name, index) => {
             const navigator = this.getNavigator(name)
             let actions = []
@@ -451,17 +451,19 @@ class NavigationStore {
                 navigator.currentStack.clear()
                 actions.push({ routeName: navigator.initRoute })
             }
+            if (this.debug)
+                console.log('last route:', lastRoute, 'actions:', actions)
             if (ready && navigator.navigation && actions.length >= 1 && navigator instanceof StackNavigatorPersist) {
                 let resetAction = NavigationActions.reset({
                     index: resetFlag ? 0 : actions.length - 1,
-                    actions: resetFlag ? [NavigationActions.navigate({ routeName: lastRoute.routeName, params: lastRoute.params })] : actions
+                    actions: resetFlag ? [NavigationActions.navigate({ routeName: typeof lastRoute === 'string' ? lastRoute : lastRoute.routeName, params: lastRoute.params })] : actions
                 })
                 navigator.currentRoute = null
                 try {
                     navigator.navigation.dispatch(resetAction)
                 } catch (error) {
                     if (this.debug)
-                        console.log('react-navigation error:', error)
+                        console.log('react-navigation error:', error, 'action:', resetAction)
                 }
             } else if (ready && navigator.navigation && actions.length >= 1 && navigator instanceof DrawerNavigatorPersist) {
                 navigator.currentRoute = null
