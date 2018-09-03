@@ -13,31 +13,39 @@ if you want to contribute you can
     * help with documantion 
     * forks and PRs are most welcome
 
-the latest version of this package is currently version: 1.4.3
-
-
-**IMPORTANT - THE DOCS ARE NOT UP TO DATE...**
-**WILL BE UPDATED SOON**
-
-
 of course you don't have to contribute to enjoy this package, so enjoy!
+
+
+# Change log
+
+* version 1.4.4 - **DOCS ARE UP TO DATE! - if there are any issues with the doc let me know** - Sep 3, 2018
+* version 1.4.3 - added debug support - to allow console logs on dev enviorment - Jul 2, 2018
+* versions 1.4.1-2 - bug fixes 
+* version 1.4.0 - now supports nested navigation via reactions - Jun 27, 2018
+* versions 1.3.5-6 - fixed crash caused by on change state handlers
+* version 1.3.4 - added app state on change handlers to navigators implementation - Jun 13, 2018
+* version 1.3.3 - added try catch blocks to handle react-navigation errors - Jun 13, 2018
+* version 1.3.2 - changed timeouts durations - Jun 7, 2018
+* version 1.3.1 - fixed logout - Jun 4, 2018
+* version 1.2.0 - added reset object to doneHydrating params - May 26, 2018
+
+**older versions will be added soon...**
+
+
 
 ## Why?
 
 while working with react native I found that I need to use quite often with nested navigators and keeping the navigation state when the user closes the app.
 after many times implementing an app specific navigation store using mobx, so this project aspires to be a generic navigation state mangment store which supports navigation presisitence.
 
-## Working example
+## Working example - the example is not up to date and will work only with older versions of the package
+
+**WILL UPDATE EXAMPLE SOON!**
+
 you can check out the very simple react native example app
 just click [here](https://github.com/himelbrand/mobx-react-navigation-store/tree/master/ReactNativeExample) and follow the instructions
 enjoy!
 
-## What's ready?
-
-* stack navigators - has support
-    * navigation actions support still missing : replace, push, pop, popToTop
-* drawer navigators - has support
-* tab navigators - has support
 
 ## Installation
 
@@ -198,7 +206,9 @@ Please read [CONTRIBUTING.md](https://github.com/himelbrand/mobx-react-navigatio
 ## Versioning
 
 We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
+
 ## License
+
 This project is licensed under the MIT License
 
 ## Acknowledgments

@@ -18,7 +18,7 @@ of course you don't have to contribute to enjoy this package, so enjoy!
 
 # Change log
 
-* version 1.4.4 - **DOCS ARE UP TO DATE! - if there are any issues with the doc let me know**
+* version 1.4.4 - **DOCS ARE UP TO DATE! - if there are any issues with the doc let me know** - Sep 3, 2018
 * version 1.4.3 - added debug support - to allow console logs on dev enviorment - Jul 2, 2018
 * versions 1.4.1-2 - bug fixes 
 * version 1.4.0 - now supports nested navigation via reactions - Jun 27, 2018
