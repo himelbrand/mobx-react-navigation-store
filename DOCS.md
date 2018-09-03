@@ -2,9 +2,10 @@
 
 ## NavigationStore functions
 
-#### setNavigators(navigators,settings)
+#### setNavigators(navigators,settings,debug)
 
 used to declare and set the navigators in the app and their relation to other navigators and should they persist the navigation state
+debug param is boolean that indicates if to show console.log about states and actions etc.
 both navigators and settings are objects as followed:
 ```javascript
 const navigators = {
@@ -24,7 +25,7 @@ const settings = {
     initNavigatorName:'MainNavigator'//initial navigator on first run or after using the logout function
 }
 
-NavigationStore.setNavigators(navigators,settings) //this should happen in the .then of the hydrate function, as seen in the main readme.md
+NavigationStore.setNavigators(navigators,settings,false) //this should happen in the .then of the hydrate function, as seen in the main readme.md
 ```
 
 ### goBack(needAction:boolean)
@@ -58,8 +59,16 @@ params:
 * index - default: none , description: the index of the wanted screen after the stack reset , required: yes
 ```javascript
 //instead of using the this.props.navigation.reset(actions)
-NavigationStore.reset(actions) // if you injected NavigationStore use this.props.NavigationStore instead of NavigationStore
+NavigationStore.reset(actions,index) // if you injected NavigationStore use this.props.NavigationStore instead of NavigationStore
 ```
+
+### setCuerrntRouteParams(params:object)
+
+used to set the params for current route
+params:
+* params - default: {},  description: object of params for the current route , required: no, if no params are given the default is used and the params will be cleared
+
+
 ### logout()
 
 used to reset all of the navigators in the app to empty stack and initial routes
@@ -68,18 +77,18 @@ used to reset all of the navigators in the app to empty stack and initial routes
 NavigationStore.logout() // if you injected NavigationStore use this.props.NavigationStore instead of NavigationStore
 ```
 
-### doneHydrating(ready:boolean, delay:number) & StartedStoreHydration()
+### doneHydrating(ready:boolean, delay:number, reset:object) & StartedStoreHydration()
 
 used to hydrate the store and restore the navigation state
 params of doneHydrating:
 * ready - default: true , description: if this is false the stacks will not be restored just the current route will be set to initial route , required: no
 * delay - default: 1500 , description: the delay wanted after restoring all of the stacks before storeHydrated field is set to true , required: no
 note that the ready param is not ready for use and should be implemented correctly so it could differ between navigators, right now should use only if the predicate used regards the resoration of all navigators
-
+* reset - defualt: {}, keys are Navigators names & values are booleans that indicates whether or not this navigator should reset to main route on rehydretion. (note: only add to this object relevant Navigators names).
 StartedStoreHydration is used to change the value of startedStoreHydration in case you want to render the navigator before starting the restoration stage, as seen in the example app
 
 ```javascript
-componentWillMount() {
+componentDidMount() {
     hydrate('navigation', NavigationStore).then(() => {
         NavigationStore.setNavigators({
             MainDrawer: {
@@ -130,6 +139,12 @@ returns the current route name as a string
 ### canGoBack
 
 returns a boolean value indicating whether or not it's possible to go back in the navigation
+
+
+### CurrentParams
+
+returns the current routes params object
+
 
 ## other functions
 

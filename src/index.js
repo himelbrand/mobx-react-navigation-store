@@ -518,7 +518,7 @@ class NavigationStore {
         return this.stackNavigators.has(navigatorName) || this.tabNavigators.has(navigatorName) || this.drawerNavigators.has(navigatorName)
     }
     @action
-    setCuerrntRouteParams(params) {
+    setCuerrntRouteParams(params = {}) {
         if (this.getNavigator(this.activeNavigator)) {
             this.getNavigator(this.activeNavigator).currentRoute.params = params
         }
